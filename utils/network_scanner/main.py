@@ -30,12 +30,10 @@ def main():
         scanner = Network_Scanner(ip_range_input)
     except TypeError:
         pass
-    # TODO add inquirer event-handler
+    except KeyboardInterrupt:
+        print("\n[x] Program terminated by user.\n")
     
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\n[x] Program terminated by user.")
+    main()
 
 # "Scan a given network range for all connected clients' IP and MAC addresses."

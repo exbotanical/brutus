@@ -67,5 +67,6 @@ class Network_Scanner:
             ip=client["ip"]
             mac=client["mac"]
             print(f"{ip}\t\t{mac}")
+        print("\n")
 
 

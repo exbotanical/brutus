@@ -40,7 +40,7 @@ def main():
             inquirer.Confirm("confirmation", message="Update MAC address?")
         ]
 
-        answers = inquirer.prompt(questions)
+        answers = inquirer.prompt(questions, raise_keyboard_interrupt=True)
 
         interface = answers["interface"]
         generation_status = answers["generation_status"]
@@ -67,15 +67,13 @@ def main():
             print(f"[+] Current MAC for device {interface}: {str(get_current_mac(None, interface))}\n")
             # change_mac_address(interface, new_mac)
             # validate_new_mac_persistence(interface, new_mac)
-            
     except TypeError:
         pass
-    # TODO add inquirer event-handler
-if __name__ == "__main__":
-    try:
-        main()
     except KeyboardInterrupt:
-        print("\n[x] Program terminated by user.")
+        print("\n[x] Program terminated by user.\n")
+
+if __name__ == "__main__":
+    main()
 
 
 # inquirer.Editor('hi',message="", default=None)
