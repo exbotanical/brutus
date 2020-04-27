@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import inquirer
 from inquirer import errors
 import ipaddress
-from utils.network_scanner.network_scanner import *
+from packages.network_scanner.network_scanner import *
 
 def validate_ip(answers, current):
     """

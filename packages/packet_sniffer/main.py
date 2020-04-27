@@ -1,4 +1,4 @@
-from utils.packet_sniffer.packet_sniff import Sniffer
+from packages.packet_sniffer.packet_sniff import Sniffer
 import inquirer
 
 def main():

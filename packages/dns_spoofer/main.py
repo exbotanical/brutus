@@ -1,6 +1,6 @@
 import subprocess
 import inquirer
-from utils.dns_spoofer.dns_spoof import Spoofer
+from packages.dns_spoofer.dns_spoof import Spoofer
 
 def main():
     try:

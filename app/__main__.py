@@ -4,12 +4,14 @@ import os
 import subprocess
 import platform
 from inquirer import errors
-from utils.mac_changer import main as mac_changer
-from utils.network_scanner import main as network_scan
-from utils.arp_spoofer import main as arp_spoofer
-from utils.packet_sniffer import main as packet_sniffer
+from packages.mac_changer import main as mac_changer
+from packages.network_scanner import main as network_scan
+from packages.arp_spoofer import main as arp_spoofer
+from packages.packet_sniffer import main as packet_sniffer
 try:
-   from utils.dns_spoofer import main as dns_spoofer
+   from packages.dns_spoofer import main as dns_spoofer
+   from packages.javascript_injector import main as javascript_injector
+   from packages.file_surrogator import main as file_surrogator
 except ImportError:
    pass
 
@@ -51,7 +53,7 @@ def flag_processes(answers, current):
    """
    Flag certain processes to prompt the user for confirmation before proceeding.
    """
-   if ("spoofer" in current or "sniffer" in current):
+   if ("spoofer" in current or "sniffer" in current or "injector" in current):
       response = inquirer.prompt([inquirer.Confirm('mitm', message="You must be established as MITM to run this module. Proceed?")])
       if (response["mitm"] == True):
          return True
@@ -67,12 +69,14 @@ def main():
       ("Network Scanner","network_scan"),
       ("ARP Spoofer", "arp_spoofer"),
       ("DNS Spoofer", "dns_spoofer"),
-      ("Packet Sniffer", "packet_sniffer")
+      ("Packet Sniffer", "packet_sniffer"),
+      ("Javascript Injector", "javascript_injector"),
+      ("File Surrogator", "file_injector")
       ]
 
    questions = [
-      inquirer.List("primary_thread", "Select an option", choices=primary_choices),
-      inquirer.List("utils", "Select a Utility", choices=util_choices, ignore=exit_status, validate=flag_processes)
+      inquirer.List("primary_thread", "Select an option", choices=primary_choices, carousel=True),
+      inquirer.List("utils", "Select a Utility", choices=util_choices, ignore=exit_status, validate=flag_processes, carousel=True)
    ]
 
    while True:
@@ -89,7 +93,10 @@ def main():
          spawn_disparate_shell_linux("dns_spoofer")
       if (answers and answers["utils"] == "packet_sniffer"):
          spawn_disparate_shell_unix("packet_sniffer")
-         
+      if (answers and answers["utils"] == "javascript_injector"):
+         spawn_disparate_shell_linux("javascript_injector")
+      if (answers and answers["utils"] == "file_injector"):
+         spawn_disparate_shell_linux("file_surrogator")
       print(answers)
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 # Author: Matthew Zito (goldmund) 
 # Contact: https://www.github.com/MatthewZito
 # Version: 0.3.0
-from utils.mac_changer.mac_changer import *
+from packages.mac_changer.mac_changer import *
 import inquirer
 
 def main():
