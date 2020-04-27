@@ -17,8 +17,8 @@ def main():
     except KeyboardInterrupt:
         try:
             print("\n[x] ARP Spoofer terminated by user. Resetting ARP tables...\n")
-            spoofer.restore_defaults(target_ip, gateway_ip)
-            spoofer.restore_defaults(gateway_ip, target_ip)
+            spoofer.restore_defaults(target_ip, gateway_ip, spoofer.target_mac, spoofer.gateway_mac)
+            spoofer.restore_defaults(gateway_ip, target_ip, spoofer.gateway_mac, spoofer.target_mac)
         except:
             print("[-] Unable to reset ARP tables. You'll need to do this manually, it seems...")
             
