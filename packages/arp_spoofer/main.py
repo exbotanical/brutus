@@ -4,7 +4,7 @@ import inquirer
 def main():
     try:
         questions = [
-            # validate=validate_ip
+        # validate=validate_ip
         inquirer.Text("target_ip", message="Enter the target/client IP address"),
         inquirer.Text("gateway_ip", message="Enter the gateway/access point IP address"),
         ]
@@ -18,8 +18,8 @@ def main():
     except KeyboardInterrupt:
         try:
             print("\n[x] ARP Spoofer terminated by user. Resetting ARP tables...\n")
-            # spoofer.restore_defaults(target_ip, gateway_ip)
-            # spoofer.restore_defaults(gateway_ip, target_ip)
+            spoofer.restore_defaults(target_ip, gateway_ip)
+            spoofer.restore_defaults(gateway_ip, target_ip)
         except:
             print("[-] Unable to reset ARP tables. You'll need to do this manually, it seems...")
             

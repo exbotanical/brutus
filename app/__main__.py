@@ -8,6 +8,7 @@ from packages.mac_changer import main as mac_changer
 from packages.network_scanner import main as network_scan
 from packages.arp_spoofer import main as arp_spoofer
 from packages.packet_sniffer import main as packet_sniffer
+from utils.enable_monitor_mode import enable_monitor_mode
 try:
    from packages.dns_spoofer import main as dns_spoofer
    from packages.javascript_injector import main as javascript_injector
@@ -18,36 +19,42 @@ except ImportError:
 operating_sys = platform.system().lower()
 dir_path = os.path.dirname(os.path.dirname(__file__))
 
-def spawn_disparate_shell_linux(utility):
+def spawn_disparate_shell_linux(pkg):
    """
-   Initialize given utility as its own process, in a discrete shell.
+   Initialize given package as its own process, in a discrete shell.
    Enforces Linux-contingent validation.
    """
    if (operating_sys == "linux" or operating_sys == "linux2"):
-      os.system(f"gnome-terminal -e 2>/dev/null 'bash -c \"python3 -m utils.{utility}.main; exec bash\"'")
+      os.system(f"gnome-terminal -e 2>/dev/null 'bash -c \"python3 -m packages.{pkg}.main; exec bash\"'")
    else:
-      print("[-] Your operating system does not support this utility.\n")
+      print("[-] Your operating system does not support this package.\n")
 
-def spawn_disparate_shell_unix(utility):
+def spawn_disparate_shell_unix(pkg):
    """
-   Initialize given utility as its own process, in a discrete shell.
+   Initialize given package as its own process, in a discrete shell.
    Enforces UNIX-contingent validation.
    """
    # imperfect solution for production, but launch in new terminal as root user
    if (operating_sys == "linux" or operating_sys == "linux2"):
-      os.system(f"gnome-terminal -e 2>/dev/null 'bash -c \"python3 -m utils.{utility}.main; exec bash\"'")
+      os.system(f"gnome-terminal -e 2>/dev/null 'bash -c \"python3 -m packages.{pkg}.main; exec bash\"'")
    if (operating_sys == "darwin"):
       os.system(f"""osascript -e 'tell app "Terminal"
-      do script "cd {dir_path}; python3 -m utils.{utility}.main"
+      do script "cd {dir_path}; python3 -m packages.{pkg}.main"
       end tell' """)
    else:
-      print("[-] Your operating system does not support this utility.\n")
+      print("[-] Your operating system does not support this package.\n")
 
 def exit_status(answers):
    """
    Simulates sigkill on primary thread loop to exit app (somewhat) quietly.
    """
    return (answers["primary_thread"] == "exit")
+
+def ignore_utils(answers):
+   return (answers["primary_thread"] != "utils")
+
+def ignore_tools(answers):
+   return (answers["primary_thread"] != "tools")
 
 def flag_processes(answers, current):
    """
@@ -63,40 +70,62 @@ def flag_processes(answers, current):
       return True 
 
 def main():
-   primary_choices = [("Utilities", "utils"), "Payloads", "Leviathan C&C",("Exit","exit")]
-   util_choices = [
+   primary_choices = [
+      ("Tools", "tools"),
+      ("Utils", "utils"), 
+      "Payloads", 
+      "Leviathan C&C",
+      ("Exit","exit")]
+   tool_choices = [
       ("MAC Changer (Cloak)", "cloak"), 
       ("Network Scanner","network_scan"),
       ("ARP Spoofer", "arp_spoofer"),
       ("DNS Spoofer", "dns_spoofer"),
       ("Packet Sniffer", "packet_sniffer"),
       ("Javascript Injector", "javascript_injector"),
-      ("File Surrogator", "file_injector")
+      ("File Surrogator", "file_injector"),
+      ("Back","back")
+      ]
+   util_choices = [
+      ("Enable Monitor Mode","mon"),
+      ("Back","back")
       ]
 
    questions = [
       inquirer.List("primary_thread", "Select an option", choices=primary_choices, carousel=True),
-      inquirer.List("utils", "Select a Utility", choices=util_choices, ignore=exit_status, validate=flag_processes, carousel=True)
+      inquirer.List("selected_tool", "Select a Tool", choices=tool_choices, ignore=ignore_tools, validate=flag_processes, carousel=True),
+      inquirer.List("selected_util", "Select a Utility", choices=util_choices, ignore=ignore_utils, validate=flag_processes, carousel=True)
    ]
 
    while True:
       answers = inquirer.prompt(questions, raise_keyboard_interrupt=True)
+      # Primary Menu
       if (answers and answers["primary_thread"] == "exit"):
          break
-      if (answers and answers["utils"] == "cloak"):
-         mac_changer.main()
-      if (answers and answers["utils"] == "network_scan"):
-         network_scan.main()
-      if (answers and answers["utils"] == "arp_spoofer"):
-         spawn_disparate_shell_unix("arp_spoofer")
-      if (answers and answers["utils"] == "dns_spoofer"):
-         spawn_disparate_shell_linux("dns_spoofer")
-      if (answers and answers["utils"] == "packet_sniffer"):
-         spawn_disparate_shell_unix("packet_sniffer")
-      if (answers and answers["utils"] == "javascript_injector"):
-         spawn_disparate_shell_linux("javascript_injector")
-      if (answers and answers["utils"] == "file_injector"):
-         spawn_disparate_shell_linux("file_surrogator")
+      # Tools Menu
+      if (answers and answers["primary_thread"] == "tools"):
+         if (answers and answers["selected_tool"] == "back"):
+            continue
+         if (answers and answers["selected_tool"] == "cloak"):
+            mac_changer.main()
+         if (answers and answers["selected_tool"] == "network_scan"):
+            network_scan.main()
+         if (answers and answers["selected_tool"] == "arp_spoofer"):
+            spawn_disparate_shell_unix("arp_spoofer")
+         if (answers and answers["selected_tool"] == "dns_spoofer"):
+            spawn_disparate_shell_linux("dns_spoofer")
+         if (answers and answers["selected_tool"] == "packet_sniffer"):
+            spawn_disparate_shell_unix("packet_sniffer")
+         if (answers and answers["selected_tool"] == "javascript_injector"):
+            spawn_disparate_shell_linux("javascript_injector")
+         if (answers and answers["selected_tool"] == "file_injector"):
+            spawn_disparate_shell_linux("file_surrogator")
+      # Utils Menu
+      if (answers and answers["primary_thread"] == "utils"): 
+         if (answers and answers["selected_util"] == "back"):
+            break
+         if (answers and answers["selected_util"] == "mon"):
+            enable_monitor_mode()
       print(answers)
 
 if __name__ == "__main__":

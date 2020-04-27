@@ -65,8 +65,8 @@ def main():
             print("[-] An exception has been raised.")
         if (new_mac != None):
             print(f"[+] Current MAC for device {interface}: {str(get_current_mac(None, interface))}\n")
-            # change_mac_address(interface, new_mac)
-            # validate_new_mac_persistence(interface, new_mac)
+            change_mac_address(interface, new_mac)
+            validate_new_mac_persistence(interface, new_mac)
     except TypeError:
         pass
     except KeyboardInterrupt:

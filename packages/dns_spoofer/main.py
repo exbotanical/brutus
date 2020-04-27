@@ -5,7 +5,7 @@ from packages.dns_spoofer.dns_spoof import Spoofer
 def main():
     try:
         questions = [
-            # validate=validate_ip
+        # validate=validate_ip
         inquirer.Text("target_url", message="Enter the the target url"),
         inquirer.Text("redirect_ip", message="Enter the IP to which target will resolve")
         ]
