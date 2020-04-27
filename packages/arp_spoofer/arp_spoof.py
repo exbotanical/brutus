@@ -25,6 +25,7 @@ class Spoofer:
         self.gateway_ip = gateway_ip
         self.dest_mac = self.resolve_mac_from_ip(self.target_ip)
         self.src_mac = self.resolve_mac_from_ip(self.gateway_ip)
+        self.run(self.target_ip, self.gateway_ip)
         
     def resolve_mac_from_ip(self, ip_address):
         """

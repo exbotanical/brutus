@@ -8,11 +8,10 @@ def main():
         inquirer.Text("target_ip", message="Enter the target/client IP address"),
         inquirer.Text("gateway_ip", message="Enter the gateway/access point IP address"),
         ]
-        spoofer = Spoofer()
         answers = inquirer.prompt(questions, raise_keyboard_interrupt=True)
         target_ip = answers["target_ip"]
         gateway_ip = answers["gateway_ip"]
-        spoofer.run(target_ip, gateway_ip)
+        spoofer = Spoofer(target_ip, gateway_ip)
     except TypeError:
         pass
     except KeyboardInterrupt:
