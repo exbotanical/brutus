@@ -19,7 +19,6 @@ import subprocess
 from subprocess import Popen
 
 class Spoofer:
-    
     def resolve_mac_from_ip(self, ip_address):
         """
         Accepts as input an IP address, resolves its corresponding MAC address,

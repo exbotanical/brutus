@@ -1,4 +1,4 @@
-from utils.arp_spoofer.arp_spoofer import Spoofer
+from utils.arp_spoofer.arp_spoof import Spoofer
 import inquirer
 
 def main():
