@@ -40,12 +40,14 @@ class Sniffer:
             url = self.get_url(packet)
             print("[+] HTTP Request")
             print(url + "\n")
-            credentials = self.get_credentials(packet)
-            if (credentials):
-                print("\n[+] Prospective credentials found")
-                print(str(credentials) + "\n")
+            try:
+                credentials = self.get_credentials(packet)
+                if (credentials):
+                    print("\n[+] Prospective credentials found")
+                    print(str(credentials) + "\n")
+            except Exception as i:
+                print(f"DEBUG: {i}")
             
-
     def sniff(self, interface):
         print("[+] Packet sniffing initiated...\n")
         scapy.sniff(iface=interface, store=False, prn=self.process_packet)
