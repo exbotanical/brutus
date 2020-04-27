@@ -111,7 +111,7 @@ def main():
          if (answers and answers["selected_tool"] == "network_scan"):
             network_scan.main()
          if (answers and answers["selected_tool"] == "arp_spoofer"):
-            spawn_disparate_shell_unix("arp_spoofer")
+            spawn_disparate_shell_linux("arp_spoofer")
          if (answers and answers["selected_tool"] == "dns_spoofer"):
             spawn_disparate_shell_linux("dns_spoofer")
          if (answers and answers["selected_tool"] == "packet_sniffer"):
