@@ -20,7 +20,7 @@ try:
     vuln_scanner.crawl()
     vuln_scanner.initiate_scan()
 except KeyboardInterrupt:
-    print("\n\n[x] Program terminated by user.")
+    print("\n[x] Web Scanner terminated by user.\n")
 
 # fun links
 # http://iberianodonataucm.myspecies.info/

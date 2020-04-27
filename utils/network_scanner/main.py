@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import inquirer
+from inquirer import errors
 import ipaddress
 from utils.network_scanner.network_scanner import *
 
@@ -31,7 +32,7 @@ def main():
     except TypeError:
         pass
     except KeyboardInterrupt:
-        print("\n[x] Program terminated by user.\n")
+        print("\n[x] Network Scanner terminated by user.\n")
     
 if __name__ == "__main__":
     main()

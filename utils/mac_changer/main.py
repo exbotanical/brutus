@@ -70,7 +70,7 @@ def main():
     except TypeError:
         pass
     except KeyboardInterrupt:
-        print("\n[x] Program terminated by user.\n")
+        print("\n[x] MAC Changer terminated by user.\n")
 
 if __name__ == "__main__":
     main()

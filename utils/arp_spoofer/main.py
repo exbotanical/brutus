@@ -17,13 +17,10 @@ def main():
         pass
     except KeyboardInterrupt:
         try:
-            print("\n[x] Program terminated by user. Resetting ARP tables...")
+            print("\n[x] ARP Spoofer terminated by user. Resetting ARP tables...\n")
             # spoofer.restore_defaults(target_ip, gateway_ip)
             # spoofer.restore_defaults(gateway_ip, target_ip)
-            print(target_ip)
-        except UnboundLocalError:
-            pass
-        else:
+        except:
             print("[-] Unable to reset ARP tables. You'll need to do this manually, it seems...")
             
 if __name__ == "__main__":

@@ -132,7 +132,7 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n[x] Program terminated by user. Flushing IP Tables...")
+        print("\n[x] Surrogator terminated by user. Flushing IP Tables...\n")
         subprocess.call(["iptables --flush"], shell=True)
         
 # demo 
