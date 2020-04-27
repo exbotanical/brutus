@@ -18,5 +18,5 @@ def enable_monitor_mode():
             pass
         except KeyboardInterrupt:
             print("\n[x] Utility terminated by user.\n")
-        else:
+        except:
             raise errors.ValidationError('', reason=f"[-] Unable to read MAC address of device {interface}.")
