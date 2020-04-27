@@ -1,7 +1,6 @@
 from utils.arp_spoofer.arp_spoofer import Spoofer
 import inquirer
 
-
 def main():
     try:
         questions = [
@@ -27,7 +26,6 @@ def main():
         else:
             print("[-] Unable to reset ARP tables. You'll need to do this manually, it seems...")
             
-
 if __name__ == "__main__":
     main()
 

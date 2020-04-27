@@ -1,5 +1,8 @@
 import inquirer
 import threading
+import os
+import subprocess
+import platform
 from inquirer import events
 from utils.mac_changer import main as mac_changer
 from utils.network_scanner import main as network_scan
@@ -29,9 +32,13 @@ try:
       if (answers and answers["utils"] == "network_scan"):
          network_scan.main()
       if (answers and answers["utils"] == "arp_spoofer"):
-         arp_spoofer.main()
-      
+         # imperfect solution for production, but launch in new terminal as root user
+         if (platform == "linux" or platform == "linux2"):
+            os.system("gnome-terminal -e 2>/dev/null 'bash -c \"python3 -m utils.arp_spoofer.main; exec bash\"'")
+         if (platform == "darwin"):
+            pass
          print(answers)
+         
 except KeyboardInterrupt:
    print("[-] Done.")
 
