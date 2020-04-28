@@ -13,3 +13,6 @@ sslstrip
 pip3 install -U git+https://github.com/kti/python-netfilterqueue
 pip3 install inquirer
 pip3 install 
+
+ERRORS:
+sslstrip doesnt work

