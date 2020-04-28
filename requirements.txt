@@ -1,0 +1,3 @@
+inquirer==2.6.3
+requests==2.21.0
+scapy==2.4.3
