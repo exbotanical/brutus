@@ -13,10 +13,10 @@ def instantiate_queue():
     enable_port_fwd()
     #try:
     proc = subprocess.Popen("sslstrip", shell=True, stdout=subprocess.PIPE)
-    print(proc.communicate()[0]),
+    proc.communicate()[0]
     proc = subprocess.Popen(downgrade_fwd_cmd, shell=True, stdout=subprocess.PIPE)
-    print(proc.communicate()[0]),
+    proc.communicate()[0]
     proc = subprocess.Popen(downgrade_https, shell=True, stdout=subprocess.PIPE)
-    print(proc.communicate()[0]),
+    proc.communicate()[0]
     # except TimeoutExpired:
     #     proc.kill()

