@@ -44,7 +44,7 @@ class Sniffer:
                 credentials = self.get_credentials(packet)
                 if (credentials):
                     print("\n[+] Prospective credentials found")
-                    print(str(credentials) + "\n")
+                    print(str(credentials.decode()) + "\n")
             except Exception as i:
                 print(f"DEBUG: {i}")
             
