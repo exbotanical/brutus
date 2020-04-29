@@ -137,7 +137,7 @@ def main():
          if (answers and answers["selected_web"] == "back"):
             continue
          if (answers and answers["selected_web"] == "vulnweb"):
-            vulnerability_scanner.main()
+            spawn_disparate_shell_unix("web_tools.scanner")
       # Utils Menu
       if (answers and answers["primary_thread"] == "utils"): 
          if (answers and answers["selected_util"] == "back"):

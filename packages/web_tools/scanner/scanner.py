@@ -98,11 +98,12 @@ class Scanner:
                 print(f"[+] Beginning GET evaluation for {link}")
                 is_vuln_to_xss = self.eval_xss_link(link)
                 if (is_vuln_to_xss):
-                    print(f"[*] XSS Vulnerability found in URL params at {link}\n")
+                    print("[*] XSS Vulnerability found in URL parameters.\n")
                 for simulacrum in SQLI_SIMULACRA:
                     is_vuln_to_sqli = self.eval_tautological_sqli_link(link, simulacrum)
                     if (is_vuln_to_sqli and "view=image" not in link):
-                        print(f"[*] Tautological SQLi Vulnerability found in URL params at {link}\n")
+                        print("[*] Tautological SQLi Vulnerability found in URL parameters.\n")
+                        break # only report vuln once per link, not for each simulacrums
         print(f"[+] Eval of {self.target_url} complete.\n")
 
     def eval_xss_link(self, url):
@@ -126,6 +127,11 @@ class Scanner:
             return False
     
     def eval_tautological_sqli_link(self, url, simulacrum):
+        """
+        Utilizes tautology method of SQL injection (forced boolean return val).
+        This method needs some serious extension; it's flagging everything as a vuln,
+        but I wanted to get the framework implemented. Don't rely on this one for now.
+        """
         url = url.replace(url.rsplit('=', 1)[-1], simulacrum)
         try:
             response = self.session.get(url, timeout=5)
