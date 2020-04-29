@@ -26,4 +26,11 @@ try:
 except:
     pass
 
-
+TODO
+add write to file option on scanners
+fix wordlist path
+make http/https path resolution auto in spider/link harvester
+elucidate requirements in inquirer prompts
+color output
+error handling
+variables
