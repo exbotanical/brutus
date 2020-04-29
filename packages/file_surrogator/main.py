@@ -1,6 +1,6 @@
 import subprocess
 import inquirer
-from packages.file_surrogator import Surrogator
+from packages.file_surrogator.file_surrogation import Surrogator
 
 def main():
     try:

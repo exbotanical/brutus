@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Author: Matthew Zito (goldmund) 
 # Contact: https://www.github.com/MatthewZito
@@ -14,20 +14,21 @@ to the redirect IP. (see: DNS Spoofing)
 import subprocess
 import netfilterqueue
 import scapy.all as scapy
-from scapy.layers.inet import IP, TCP, UDP, DNS, DNSQR, DNSRR
+from scapy.layers.inet import IP, TCP, UDP
+from scapy.all import DNS, DNSQR, DNSRR
 # import scapy.all.IP
 # import scapy.all.TCP
 # import scapy.all.UDP
 # import scapy.all.DNS
 # import scapy.all.DNSQR
 # import scapy.all.DNSRR
-from utils.instantiate_queue import instantiate_queue
+from utils.downgrade_https import downgrade_https
 
 class Spoofer:
     def __init__(self, target_url, redirect_ip):
         self.target_url = target_url
         self.redirect_ip = redirect_ip
-        instantiate_queue()
+        downgrade_https()
         self.bind_queue()
         
     def process_packet(self, packet): 
@@ -63,7 +64,7 @@ class Spoofer:
         queue.bind(0, self.process_packet)
         queue.run()
 
-    # def instantiate_queue(self):
+    # def downgrade_https(self):
     #     """
     #     Enables queue by setting IP Tables rules to accomodate forwarding.
     #     """

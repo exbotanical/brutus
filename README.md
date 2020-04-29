@@ -1,18 +1,29 @@
 TODO
 
-Update code injector to python3
-Update file injector to python3
-Fix file surrogator path
+- Make setup script that installs requirements.txt, sslstrip, and chmod all shell scripts.
 add downgrade https module
-install sslstrip
 
 
 INSTALL
 
 sslstrip
+iptables
 pip3 install -U git+https://github.com/kti/python-netfilterqueue
 pip3 install inquirer
 pip3 install 
 
 ERRORS:
-sslstrip doesnt work
+sslstrip raises exceptions on POSTs 
+This is actually quite easy to fix.
+These are just warnings and they can be ignored for a cleaner output of SSLstrip.
+
+Open up the ServerConnection.py file from SSLStrip and look for this function call :  HTTPClient.handleResponsePart(self, data)  and this one: HTTPClient.handleResponseEnd(self)
+
+Just add a try/except around these calls like so:
+
+try:
+    HTTPClient.handleResponsePart(self, data)
+except:
+    pass
+
+

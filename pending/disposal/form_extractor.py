@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import requests 
 from bs4 import BeautifulSoup
-import urlparse
+from urllib.parse import urljoin
 
 base_url = "http://iberianodonataucm.myspecies.info/"
 
@@ -12,14 +12,13 @@ def request(url):
     except (requests.exceptions.ConnectionError):
         pass
 
-
 response = request(base_url)
 parsed_html = BeautifulSoup(response.content,features="html.parser")
 forms_list = parsed_html.findAll("form")
 
 for form in forms_list:
     action = form.get("action")
-    post_url = urlparse.urljoin(base_url, action)
+    post_url = urljoin(base_url, action)
     method = form.get("method")
 
     inputs_list = form.findAll("input")

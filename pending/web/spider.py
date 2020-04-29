@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import requests 
 import re
@@ -20,7 +20,7 @@ def crawl(base_url):
             link = link.split("#")[0]
         if (base_url in link and link not in harvested_links):
             harvested_links.append(link)
-            print("[+] New URL Found --> {i}").format(i=link)
+            print(f"[+] New URL Found --> {link}")
             crawl(link) # recursively crawl everything
             
 crawl(base_url)

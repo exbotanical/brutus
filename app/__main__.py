@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import inquirer
 import threading
 import os
@@ -8,6 +10,7 @@ from packages.mac_changer import main as mac_changer
 from packages.network_scanner import main as network_scan
 from packages.arp_spoofer import main as arp_spoofer
 from packages.packet_sniffer import main as packet_sniffer
+from packages.web_tools.scanner import main as vulnerability_scanner
 from utils.enable_monitor_mode import enable_monitor_mode
 try:
    from packages.dns_spoofer import main as dns_spoofer
@@ -50,6 +53,9 @@ def exit_status(answers):
    """
    return (answers["primary_thread"] == "exit")
 
+def ignore_web(answers):
+   return (answers["primary_thread"] != "web")
+
 def ignore_utils(answers):
    return (answers["primary_thread"] != "utils")
 
@@ -71,7 +77,8 @@ def flag_processes(answers, current):
 
 def main():
    primary_choices = [
-      ("Tools", "tools"),
+      ("Network Tools", "tools"),
+      ("Web Tools", "web"),
       ("Utils", "utils"), 
       "Payloads", 
       "Leviathan C&C",
@@ -86,6 +93,10 @@ def main():
       ("File Surrogator", "file_injector"),
       ("Back","back")
       ]
+   web_choices = [
+      ("Website Vulnerability Scanner","vulnweb"),
+      ("Back","back")
+      ]
    util_choices = [
       ("Enable Monitor Mode","mon"),
       ("Back","back")
@@ -94,7 +105,8 @@ def main():
    questions = [
       inquirer.List("primary_thread", "Select an option", choices=primary_choices, carousel=True),
       inquirer.List("selected_tool", "Select a Tool", choices=tool_choices, ignore=ignore_tools, validate=flag_processes, carousel=True),
-      inquirer.List("selected_util", "Select a Utility", choices=util_choices, ignore=ignore_utils, validate=flag_processes, carousel=True)
+      inquirer.List("selected_util", "Select a Utility", choices=util_choices, ignore=ignore_utils, validate=flag_processes, carousel=True),
+      inquirer.List("selected_web", "Select a Tool", choices=web_choices, ignore=ignore_web, validate=flag_processes, carousel=True)
    ]
 
    while True:
@@ -120,13 +132,18 @@ def main():
             spawn_disparate_shell_linux("javascript_injector")
          if (answers and answers["selected_tool"] == "file_injector"):
             spawn_disparate_shell_linux("file_surrogator")
+      # Web Menu
+      if (answers and answers["primary_thread"] == "web"):
+         if (answers and answers["selected_web"] == "back"):
+            continue
+         if (answers and answers["selected_web"] == "vulnweb"):
+            vulnerability_scanner.main()
       # Utils Menu
       if (answers and answers["primary_thread"] == "utils"): 
          if (answers and answers["selected_util"] == "back"):
-            break
+            continue
          if (answers and answers["selected_util"] == "mon"):
             enable_monitor_mode()
-      print(answers)
 
 if __name__ == "__main__":
    try:

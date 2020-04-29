@@ -1,13 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import requests 
 
 base_url = "google.com"
 wordlist = "subdomains.txt"
+timeout = 1
 
 def request(url):
     try:
-        return requests.get("http://" + url, timeout=1)
+        return requests.get("http://" + url, timeout=timeout)
     except (requests.exceptions.ConnectionError):
         pass
     except (requests.exceptions.InvalidURL):
@@ -15,11 +16,10 @@ def request(url):
     except (requests.exceptions.Timeout):
         pass
     
-
 with open(wordlist, "r") as wordlist_stream:
     for line in wordlist_stream:
         subdomain = line.strip()
-        ephemeral_url = "{a}.{b}".format(a=subdomain,b=base_url)
+        ephemeral_url = f"{subdomain}.{base_url}"
         response = request(ephemeral_url)
         if (response):
-            print("[+] Discovered subdomain --> {i}").format(i=ephemeral_url)
+            print(f"[+] Discovered subdomain --> {ephemeral_url}")

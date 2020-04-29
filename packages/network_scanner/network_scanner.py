@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Author: Matthew Zito (goldmund) 
 # Contact: https://www.github.com/MatthewZito
