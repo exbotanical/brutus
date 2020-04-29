@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import requests
 import re
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
+from config.sql_errors import eval_response
 
 HREF_REGEX = '(?:href=")(.*?)"'
 XSS_SIMULACRUM = "<sCript>alert('test')</scriPt>"
 SQLI_SIMULACRA = ["'", "' or 1=1;--", "1\' or \'1\' = \'1\''", "' or 1=1--","' or 1=1#","' or 1=1/*","') or '1'='1--", "') or ('1'='1--"]
+DB_SQLI_SIMULACRA = ["'", "')", "';", '"', '")', '";', '`', '`)', '`;', '\\', "%27", "%%2727", "%25%27", "%60", "%5C"]
 
 class Scanner:
     def __init__(self, url, ignore_list, login_url=None, username=None, password=None):
@@ -103,7 +105,14 @@ class Scanner:
                     is_vuln_to_sqli = self.eval_tautological_sqli_link(link, simulacrum)
                     if (is_vuln_to_sqli and "view=image" not in link):
                         print("[*] Tautological SQLi Vulnerability found in URL parameters.\n")
-                        break # only report vuln once per link, not for each simulacrums
+                        break # only report vuln once per link, not for each simulacrums\
+            # if query string in url
+            if (urlparse(link).query != ""):
+                print(f"[+] Beginning SQL Database-contingent resolution evaluation for {link}")
+                evaluation = [self.eval_tautological_sqli_qua_db(link)]
+                if (evaluation[0]):
+                    print("[*] Tautological SQLi Vulnerability found in URL parameters.")
+                    print(f"[*] Database identified as {evaluation[1]}.\n")
         print(f"[+] Eval of {self.target_url} complete.\n")
 
     def eval_xss_link(self, url):
@@ -135,10 +144,42 @@ class Scanner:
         url = url.replace(url.rsplit('=', 1)[-1], simulacrum)
         try:
             response = self.session.get(url, timeout=5)
-            return "syntax" in str(response.content) or "error" in str(response.content)
+            return "syntax" in str(response.content)
         except (requests.exceptions.ConnectionError):
             return False
         except (requests.exceptions.InvalidURL):
             return False
         except (requests.exceptions.Timeout):
             return False
+    
+    def eval_tautological_sqli_qua_db(self, url):
+        """
+        Accepts as input a full URL with query string(s).
+        Blindly implements myriad tautologies in given query strings and evaluates
+        HTML res against proprietary responses for a variety of SQL DB configs.
+        Appends all to list, returns bool to signify if any data has been harvested.
+        """
+        base_url = url.split("?")[0]  # domain with path without queries 
+        queries = urlparse(url).query.split("&") # separate query str w/original vals
+        # no queries in url
+        if (not any(queries)):
+            return False
+        for simulacrum in DB_SQLI_SIMULACRA:
+            full_path = f"{base_url}?{('&'.join([param + simulacrum for param in queries]))}"
+            try:
+                response = self.session.get(full_path, timeout=5)
+            except (requests.exceptions.ConnectionError):
+                return False
+            except (requests.exceptions.InvalidURL):
+                return False
+            except (requests.exceptions.Timeout):
+                return False
+            if (response):
+                vulnerable, db = eval_response(str(response.content))
+                if (vulnerable and db != None):
+                    return True, db
+        return False
+
+
+        
+# url = "http://widgetshop.com/Widgets/?TypeId=1&number=5"

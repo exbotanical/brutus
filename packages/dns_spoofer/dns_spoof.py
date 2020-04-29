@@ -16,12 +16,6 @@ import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.all import DNS, DNSQR, DNSRR
-# import scapy.all.IP
-# import scapy.all.TCP
-# import scapy.all.UDP
-# import scapy.all.DNS
-# import scapy.all.DNSQR
-# import scapy.all.DNSRR
 from utils.downgrade_https import downgrade_https
 
 class Spoofer:

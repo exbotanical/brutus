@@ -16,10 +16,7 @@ import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
 from utils.downgrade_https import downgrade_https
-
-ENCODING_REGEX = "Accept-Encoding:.*?\\r\\n"
-LEN_REGEX = "(?:Content-Length:\s)(\d*)"
-INJECTION_REGEX = "</body>"
+from config.variables import ENCODING_REGEX, LEN_REGEX, INJECTION_REGEX
 
 class Injector:
     def __init__(self, payload):

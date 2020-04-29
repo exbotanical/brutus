@@ -7,10 +7,12 @@ class Scanner:
         self.wordlist = wordlist
         self.interval = int(interval)
         self.discover_subdomain(self.wordlist, self.target_url)
-        
+    
     def request(self, url):
+        if (not url.startswith("http://") or url.startswith("https://")):
+            url = "http://" + url
         try:
-            return requests.get(f"https://{url}", timeout=self.interval)
+            return requests.get(url, timeout=self.interval)
         except (requests.exceptions.ConnectionError):
             pass
         except (requests.exceptions.InvalidURL):

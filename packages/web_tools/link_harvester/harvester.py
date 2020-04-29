@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import requests 
 import re
-from urllib.parse import urljoin
 import inquirer
+from urllib.parse import urljoin
 
 HREF_REGEX = '(?:href=")(.*?)"'
 
