@@ -2,8 +2,7 @@
 import inquirer
 import subprocess
 import os
-
-WINDOWS_PYTHON_INTERPRETER_PATH = os.path.expanduser("~/.wine/drive_c/Python27/Scripts/pyinstaller.exe")
+from config.variables import WINDOWS_PYTHON_INTERPRETER_PATH
 
 def write_injection(file_name, url):
     with open(file_name, "w+") as file:

@@ -4,11 +4,7 @@ import re
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 from config.sql_errors import eval_response
-
-HREF_REGEX = '(?:href=")(.*?)"'
-XSS_SIMULACRUM = "<sCript>alert('test')</scriPt>"
-SQLI_SIMULACRA = ["'", "' or 1=1;--", "1\' or \'1\' = \'1\''", "' or 1=1--","' or 1=1#","' or 1=1/*","') or '1'='1--", "') or ('1'='1--"]
-DB_SQLI_SIMULACRA = ["'", "')", "';", '"', '")', '";', '`', '`)', '`;', '\\', "%27", "%%2727", "%25%27", "%60", "%5C"]
+from config.variables import XSS_SIMULACRUM, SQLI_SIMULACRA, DB_SQLI_SIMULACRA, HREF_REGEX
 
 class Scanner:
     def __init__(self, url, ignore_list, login_url=None, username=None, password=None):
@@ -113,7 +109,7 @@ class Scanner:
                 if (evaluation[0]):
                     print("[*] Tautological SQLi Vulnerability found in URL parameters.")
                     print(f"[*] Database identified as {evaluation[1]}.\n")
-        print(f"[+] Eval of {self.target_url} complete.\n")
+        print(f"\n[+] Eval of {self.target_url} complete.\n")
 
     def eval_xss_link(self, url):
         """
@@ -157,7 +153,7 @@ class Scanner:
         Accepts as input a full URL with query string(s).
         Blindly implements myriad tautologies in given query strings and evaluates
         HTML res against proprietary responses for a variety of SQL DB configs.
-        Appends all to list, returns bool to signify if any data has been harvested.
+        Returns bool to signify if any data has been harvested; returns matched DB name (str).
         """
         base_url = url.split("?")[0]  # domain with path without queries 
         queries = urlparse(url).query.split("&") # separate query str w/original vals

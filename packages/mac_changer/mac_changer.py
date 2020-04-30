@@ -11,10 +11,6 @@ import configparser
 import inquirer
 from inquirer import errors
 
-# config = configparser.ConfigParser()
-# config.read('config.ini')
-# MAC_REGEX = config['DEFAULT']['MAC_REGEX']
-
 def get_current_mac(answers=None, interface=None):
     """
     Calls ifconfig, runs a regex to find the specified device's (interface)

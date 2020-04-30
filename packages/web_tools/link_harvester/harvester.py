@@ -3,8 +3,8 @@ import requests
 import re
 import inquirer
 from urllib.parse import urljoin
+from config.variables import HREF_REGEX
 
-HREF_REGEX = '(?:href=")(.*?)"'
 
 class Harvester:
     def __init__(self, target_url):
