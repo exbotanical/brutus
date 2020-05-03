@@ -7,16 +7,15 @@ TODO
 - add downgrade https module
 - add write to file option on scanners
 - fix wordlist path resolution
-- make http/https path resolution auto in spider/link harvester
 - elucidate requirements in inquirer prompts
 - color output
 - error handling
-- variables
 
 CHANGELOG
 - 29 April: Scanner (web), add new method to eval db-contingent resolutions of tautological, SQLi-injected URLs.
 
 INSTALL
+- requests
 - sslstrip
 - iptables
 - inquirer

