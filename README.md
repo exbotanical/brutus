@@ -318,8 +318,8 @@ def persist_macos(self):
 
 #### <a name="botnet"></a> The Brutus Botnet Modules
 
-[intra-network botnet source](https://github.com/MatthewZito/Brutus/tree/master/pending/intra_botnet))
-[inter-network botnet source](https://github.com/MatthewZito/Brutus/tree/master/pending/inter_botnet))
+([intra-network botnet source](https://github.com/MatthewZito/Brutus/tree/master/pending/intra_botnet))
+([inter-network botnet source](https://github.com/MatthewZito/Brutus/tree/master/pending/inter_botnet))
 
 The Brutus botnet really is two separate modules: an intra-network botnet, and an inter-network botnet. The difference here is critical, as we are able to refine the system architectures thereof per their respective purposes: for instance, the intra-network botnet relies on socket connections and a less robust multi-threaded model (i.e. it is intended to collate less targets).
 
