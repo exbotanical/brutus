@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.1.0
-
 """
 Presumes controller is MITM. Given a user input
 wireless device, this program will sniff HTTP traffic

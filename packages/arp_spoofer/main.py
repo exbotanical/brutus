@@ -1,5 +1,7 @@
-from packages.arp_spoofer.arp_spoof import Spoofer
+#!/usr/bin/env python3
 import inquirer
+
+from packages.arp_spoofer.arp_spoof import Spoofer
 
 def main():
     questions = [

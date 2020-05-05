@@ -1,0 +1,7 @@
+Flask
+Flask-Script
+Flask-SQLAlchemy
+itsdangerous
+Jinja2
+pygeoip
+SQLAlchemy

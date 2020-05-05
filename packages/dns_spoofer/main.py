@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
 import subprocess
+
 import inquirer
+
 from packages.dns_spoofer.dns_spoof import Spoofer
 
 def main():

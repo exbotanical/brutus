@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.1.0
-
 """
 Presumes controller is MITM.
 Allocates incoming DNS reqests in a queue, validates matches
@@ -12,10 +8,12 @@ with a user-provided IP. The requested URL will always resolve
 to the redirect IP. (see: DNS Spoofing) 
 """
 import subprocess
+
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.all import DNS, DNSQR, DNSRR
+
 from utils.downgrade_https import downgrade_https
 
 class Spoofer:

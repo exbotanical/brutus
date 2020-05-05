@@ -1,4 +1,4 @@
-#~/usr/bin/env python
+#!/usr/bin/env python3
 import inquirer
 from inquirer import errors
 from packages.web_tools.scanner.scanner import Scanner

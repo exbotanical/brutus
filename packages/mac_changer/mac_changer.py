@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.3.0
 import os
 import subprocess
-import argparse
 import re
 import random
+
 import configparser
 import inquirer
 from inquirer import errors

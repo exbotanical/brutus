@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
 """
-Author: Matthew Zito (goldmund) 
-Contact: https://www.github.com/MatthewZito
-Version: 0.1.0
-
 Presumes controller is MITM.
 Allocates HTTP Txs into a queue. Isolates HTTP raw load layer,
 matches encoding against a regex and supplants with an empty str
@@ -12,9 +8,11 @@ to elicit plaintext HTML response, which enables JS injection.
 """
 import re
 import subprocess
+
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
+
 from utils.downgrade_https import downgrade_https
 from config.variables import ENCODING_REGEX, LEN_REGEX, INJECTION_REGEX
 

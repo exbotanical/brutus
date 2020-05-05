@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.3.0
-from packages.mac_changer.mac_changer import *
 import inquirer
+
+from packages.mac_changer.mac_changer import *
 
 def main():
     def manual_mode(answers):

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import __builtin__
 from types import ModuleType
 """

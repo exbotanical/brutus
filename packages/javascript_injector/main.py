@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
 import subprocess
+
 import inquirer
+
 from packages.javascript_injector.code_injector import Injector
 
 def main():

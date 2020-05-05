@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
 from __future__ import absolute_import
+
 import inquirer
 from inquirer import errors
 import ipaddress
+
 from packages.network_scanner.network_scanner import *
 
 def validate_ip(answers, current):

@@ -1,5 +1,7 @@
-from packages.packet_sniffer.packet_sniff import Sniffer
+#!/usr/bin/env python3
 import inquirer
+
+from packages.packet_sniffer.packet_sniff import Sniffer
 
 def main():
     try:

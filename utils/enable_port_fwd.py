@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import subprocess
 
 def enable_port_fwd():

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import subprocess
 import inquirer
 from utils.enable_port_fwd import enable_port_fwd

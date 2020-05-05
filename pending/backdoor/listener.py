@@ -1,4 +1,4 @@
-#!/usr/bin/enbv python
+#!/usr/bin/env python
 import socket
 import json
 import base64

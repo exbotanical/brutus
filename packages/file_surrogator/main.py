@@ -1,5 +1,8 @@
+#!/usr/bin/env python3
 import subprocess
+
 import inquirer
+
 from packages.file_surrogator.file_surrogation import Surrogator
 
 def main():

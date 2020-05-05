@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.1.0
-
 """
 Accepts as input a target client IP and gateway IP. Automates an
 ARP Spoof whereby the controller is established as the MITM, or 
@@ -11,11 +7,12 @@ intermediary entity between the given client/gateway. Port-forwarding
 is auto-enabled, and both client and gateway ARP tables are reset
 upon user-termination.
 """
-import scapy.all as scapy
 import time
 import sys
 import subprocess
 from subprocess import Popen
+import scapy.all as scapy
+
 from utils.downgrade_https import downgrade_https
 
 class Spoofer:

@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 """
-Author: Matthew Zito (goldmund) 
-Contact: https://www.github.com/MatthewZito
 Simple malware emails to the controller the target Windows 
 machine's networks, and access credentials thereof.
 """

@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Author: Matthew Zito (goldmund) 
-# Contact: https://www.github.com/MatthewZito
-# Version: 0.1.0
-
 """
 *Presumes controller is on same network as target.
 This scanner discovers all clients on a given network by way of 

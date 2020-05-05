@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
 """
-Author: Matthew Zito (goldmund) 
-Contact: https://www.github.com/MatthewZito
-Version: 0.1.0
-
 Presumes controller is MITM.
 Allocates HTTP Txs into a queue, parses request and response objects.
 Matches a given HTTP response-type (file download) and modifies the 
@@ -12,9 +8,11 @@ packet mid-tranist with a user-provided file. Packet req/res pair is
 identified by cross-matching the seq/ack.
 """
 import subprocess
+
 import netfilterqueue
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP
+
 from utils.downgrade_https import downgrade_https
 
 class Surrogator:

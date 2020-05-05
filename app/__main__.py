@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-import inquirer
 import threading
 import os
 import subprocess
 import platform
+
+import inquirer
 from inquirer import errors
+
 from packages.mac_changer import main as mac_changer
 from packages.network_scanner import main as network_scan
 from utils.enable_monitor_mode import enable_monitor_mode
+
 operating_sys = platform.system().lower()
 dir_path = os.path.dirname(os.path.dirname(__file__))
 
