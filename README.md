@@ -1,6 +1,10 @@
 # Brutus: An All-in-One Exploitation Tool
-
-__Disclaimer: This software and all contents therein were created for research use only. I neither condone nor hold, in any capacity, responsibility for the actions of those who might intend to use this software in a manner malicious or otherwise illegal.__
+```
+Author: Matthew T Zito (goldmund)
+License: GPL 3.0
+Interpreter: Python 3.7
+Encoding: UTF-8
+```
 
 ## Table of Contents
 
@@ -19,6 +23,7 @@ __Disclaimer: This software and all contents therein were created for research u
         + [Module: Javascript Injection](#injectjs)
         + [Module: Vulnerability Scanner](#vulnscan)
         + [Payload: Reverse Shell](#revshell)
+        + [The Brutus Botnet](#botnet)
         + [General: Persistence Methods](#persistence)
  - [Development Notes](#notes)
 
@@ -226,6 +231,25 @@ Once connected, the reverse shell accepts commands (UNIX-like piping is not yet 
 
 *Note: This module is under development*
 
+#### <a name="botnet"></a> The Brutus Botnet Modules ([intra-network botnet source](https://github.com/MatthewZito/Brutus/tree/dev/pending/intra_botnet/app)), ([inter-network botnet source](https://github.com/MatthewZito/Brutus/tree/dev/pending/inter_botnet))
+
+The Brutus botnet really is two separate modules: an intra-network botnet, and an inter-network botnet. The difference here is critical, as we are able to refine the system architectures thereof per their respective purposes: for instance, the intra-network botnet relies on socket connections and a less robust multi-threaded model (i.e. it is intended to collate less targets).
+
+The inner-network botnet is a far more robust architecture, intended for less ephemeral applications than the intra-network system. It must also be noted that this system architecture is based on and uses code from SweetSoftware's Ares botnet. This incarnation of Ares is far more performant, scalable, and secure. 
+
+This botnet optionally utilizes SSL verification. Brutus spawns a web interface and SQL database per user-provided configurations; these configurations are then utilized in compilation of client/slave instances. This means a user can launch the user-interface and manage their targets therein, all from Brutus' interactive command line.
+
+Compiled slaves are OS-agnostic and persistent. They are dynamically compiled with a `connect_interval` and a `max_failed_connections` int - if the slave fails to connect, at *`connect_interval`* seconds, *`max_failed_connections`* times, the slave self destructs (and cleans up after itself). As aforementioned, SSL verification can be configured such that the slaves must associate with the Command and Control server upon report. 
+
+The slave instances keep local tmp logs to which all reverse shell, jobs/processes and assignments, and epistemological output is written. These ephemeral logs are then posted to the Command and Control server's `report` API endpoint. 
+
+The Command and Control server utilizes a RESTful API architecture to coordinate *n* slaves in a scalable and robust manner. Slaves report to their own dynamic endpoints (URL params as slave ID), which are validated against the SQL database, to which all slave information is serialized and written.
+
+The Command and Control server also utilizes MD5 for user authentication (critical functions, such as removing/killing slaves are restricted to the admin user) - the primary controller is the administrator, though user accounts can be spawned and deleted should the controller wish to allow other users access to the botnet C2 instance at any point in given time.
+
+A major next step in development is a security module, which will wrap all correspondence in AES encryption. I am also currently working on enforcing a public/private key-pair exchange on initial client/slave report, and coding a custom Diffie-Hellman script for associating. 
+
+*Note: This module is under development*
 
 #### <a name="persistence"></a> Persistence Methods
 
@@ -316,30 +340,10 @@ def persist_macos(self):
             pass
 ```
 
-#### <a name="botnet"></a> The Brutus Botnet Modules
-
-([intra-network botnet source](https://github.com/MatthewZito/Brutus/tree/dev/pending/intra_botnet/app))
-([inter-network botnet source](https://github.com/MatthewZito/Brutus/tree/dev/pending/inter_botnet))
-
-The Brutus botnet really is two separate modules: an intra-network botnet, and an inter-network botnet. The difference here is critical, as we are able to refine the system architectures thereof per their respective purposes: for instance, the intra-network botnet relies on socket connections and a less robust multi-threaded model (i.e. it is intended to collate less targets).
-
-
-The inner-network botnet is a far more robust architecture, intended for less ephemeral applications than the intra-network system. It must also be noted that this system architecture is based on and uses code from SweetSoftware's Ares botnet. This incarnation of Ares is far more performant, scalable, and secure. 
-
-This botnet optionally utilizes SSL verification. Brutus spawns a web interface and SQL database per user-provided configurations; these configurations are then utilized in compilation of client/slave instances. This means a user can launch the user-interface and manage their targets therein, all from Brutus' interactive command line.
-
-Compiled slaves are OS-agnostic and persistent. They are dynamically compiled with a `connect_interval` and a `max_failed_connections` int - if the slave fails to connect, at *`connect_interval`* seconds, *`max_failed_connections`* times, the slave self destructs (and cleans up after itself). As aforementioned, SSL verification can be configured such that the slaves must associate with the Command and Control server upon report. 
-
-The slave instances keep local tmp logs to which all reverse shell, jobs/processes and assignments, and epistemological output is written. These ephemeral logs are then posted to the Command and Control server's `report` API endpoint. 
-
-The Command and Control server utilizes a RESTful API architecture to coordinate *n* slaves in a scalable and robust manner. Slaves report to their own dynamic endpoints (URL params as slave ID), which are validated against the SQL database, to which all slave information is serialized and written.
-
-The Command and Control server also utilizes MD5 for user authentication (critical functions, such as removing/killing slaves are restricted to the admin user) - the primary controller is the administrator, though user accounts can be spawned and deleted should the controller wish to allow other users access to the botnet C2 instance at any point in given time.
-
-A major next step in development is a security module, which will wrap all correspondence in AES encryption. I am also currently working on enforcing a public/private key-pair exchange on initial client/slave report, and coding a custom Diffie-Hellman script for associating. 
-
 #### <a name="notes"></a> Development Notes
 
 You may notice many of these scripts are not yet optimized. Payload code has not been obfuscated, connections are left unencrypted, and much of the OOP architecture could be refactored. These are tasks I have been working on, but at the pace of someone working on many projects simulataneously. As such, please see the CONTRIBUTING doc; Brutus could certainly use your help.
 
 Brutus began as several, disparate programs - only after I had written them did I realize I should aggregate them into a singular tool. Thus, there are, of course, kinks, and I am working on ironing them out.
+
+__Disclaimer: This software and all contents therein were created for research use only. I neither condone nor hold, in any capacity, responsibility for the actions of those who might intend to use this software in a manner malicious or otherwise illegal.__
