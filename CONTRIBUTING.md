@@ -7,6 +7,7 @@ Second, please note that this project first began as several, disparate Python 2
 
 
 TODO
+- Supplant subprocess calls with OS library for better cross-platform interoperability
 - Make setup script that installs requirements.txt, sslstrip, and chmod all shell scripts.
 - add downgrade https module
 - add write to file option on scanners
