@@ -1,8 +1,10 @@
 # The Brutus Exploitation Framework
+```
 Author: Matthew T Zito (goldmund)
 License: GPL 3.0
 Interpreter: Python 3.7
 Encoding: UTF-8
+```
 ## Table of Contents
 
  - [Introduction](#intro) 
