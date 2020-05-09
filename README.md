@@ -120,7 +120,7 @@ Follows are the included modules:
   - Enable Port Forwarding
   - Mock Import (allows user to simulate dependencies on unsupported systems e.g. Netlifyqueue)
 
-### <a name="docs"></a> In-depth Documentation
+### <a name="docs"></a> Documentation
 
 #### <a name="macchanger"></a>  48-bit MAC Address Changer ([view source](https://github.com/MatthewZito/Brutus/blob/master/packages/mac_changer/mac_changer.py))
 
