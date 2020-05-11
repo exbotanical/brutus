@@ -343,6 +343,9 @@ def persist_macos(self):
 
 You may notice many of these scripts are not yet optimized. Payload code has not been obfuscated, connections are left unencrypted, and much of the OOP architecture could be refactored. These are tasks I have been working on, but at the pace of someone working on many projects simulataneously. As such, please see the CONTRIBUTING doc; Brutus could certainly use your help.
 
-Brutus began as several, disparate programs - only after I had written them did I realize I should aggregate them into a singular tool. Thus, there are, of course, kinks, and I am working on ironing them out.
+Brutus began as several, disparate programs - only after I had written them did I realize I should aggregate them into a singular tool. Thus, there are, of course, kinks, and I am working on ironing them out. 
+
+##### <a name="citations"></a> Accreditations
+*Many of the core module scripts are based on those written by Zaid Sabih via zsecurity.org*
 
 __Disclaimer: This software and all contents therein were created for research use only. I neither condone nor hold, in any capacity, responsibility for the actions of those who might intend to use this software in a manner malicious or otherwise illegal.__
