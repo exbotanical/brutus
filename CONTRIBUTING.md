@@ -25,16 +25,17 @@ Odd Dependencies I need to account for and for which I should probably add autom
 - iptables
 - pip3 install -U git+https://github.com/kti/python-netfilterqueue
 
-
 KNOWN ERRORS:
 
-sslstrip raises exceptions on POSTs 
-This is actually quite easy to fix.
-These are just warnings and they can be ignored for a cleaner output of SSLstrip.
-
-Open up the ServerConnection.py file from SSLStrip and look for this function call :  HTTPClient.handleResponsePart(self, data)  and this one: HTTPClient.handleResponseEnd(self)
-
-Just add a try/except around these calls like so:
+ - macOS users are receiving 'compilation failed' error messages despite successful compilation - will look at code later; it's probably an easy bugfix
+ 
+ - sslstrip raises exceptions on POSTs 
+ 
+ 
+*sslstrip error msg fix*
+This is actually quite easy to fix. These are just warnings and they can be ignored for a cleaner output of SSLstrip. Will need to open up the ServerConnection.py file from SSLStrip and look for function calls  `HTTPClient.handleResponsePart(self, data)`  and `HTTPClient.handleResponseEnd(self))` 
+ 
+Need to add a try/except around said calls like so:
 ```
 try:
     HTTPClient.handleResponsePart(self, data)
