@@ -133,7 +133,6 @@ Follows are the included modules:
     * Execute shell code
     * Direct Download / Upload
 
-
 **Utilities/Scripts** 
   - Flush IP Tables (maintains port-forwarding config)
   - Refresh OUI Directory  
@@ -143,6 +142,12 @@ Follows are the included modules:
   - Enable Port Forwarding
   - Mock Import (allows user to simulate dependencies on unsupported systems e.g. Netlifyqueue)
 
+**User Interface**
+ - Thanks to Python-Inquirer, Brutus is a fully interactive command-line interface. 
+ - Brutus' dynamic user-interface programatically resolves the user's OS and adapts system calls and module execution accordingly
+ - Launch modules in separate console windows as discrete processes
+ - Lightweight multi-processing platform: Brutus isolates failures by sandboxing module execution inside of disparate   sessions.
+ 
 ### <a name="docs"></a> Documentation
 
 #### <a name="macchanger"></a>  48-bit MAC Address Changer ([view source](https://github.com/MatthewZito/Brutus/blob/master/packages/mac_changer/mac_changer.py))
