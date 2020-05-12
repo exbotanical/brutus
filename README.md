@@ -9,6 +9,7 @@ Encoding: UTF-8
 
  - [Introduction](#intro) 
     * [About](#about)
+    * [Demos](#demo)
  - [Installation](#install) 
  - [Usage](#usage) 
  - [Features](#features)
@@ -30,6 +31,9 @@ Encoding: UTF-8
 Brutus is a Python-powered educational toolkit which automates pre and post-connection network-based exploits, as well as web-based reconnaissance. Brutus seldom relies on dependencies without the standard library, and features a fully interactive command-line interface which dynamically applies type-checking and data validation against user-input. 
 
 Brutus is designed to be an extensible framework to which new modules can easily be integrated.
+
+## <a name="demo"></a> Demos
+Web Scanning Demo: [watch mp4](https://streamable.com/scybvn)
 
 ### <a name="about"></a> A Brief Foray into Brutus' Background
 Brutus is a penetration-testing toolkit built with the intention of introducing neophyte security researchers or the otherwise interested to the underlying mechanisms which power the myriad popular exploitation tools we use today. For this reason, Brutus is largely written in Python - my hope is that this decision lends to its being an accessible and extensible framework for conducting network and web-based exploits (and learning about them), and in such applications, both pre-access and post access contexts.
