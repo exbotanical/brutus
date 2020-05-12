@@ -46,6 +46,24 @@ Brutus began as an explorative project - I was taking popular pen-testing tools 
 That's all for now. I am releasing a beta version of this and will assuredly add more to this section as my code gets picked apart ;-)
 
 ## <a name="install"></a> Installation
+Greater specificity will be added to this section in time. For now:
+
+You will need the following dependencies:
+- sslstrip
+- iptables
+- netfilterqueue (run `pip3 install -U git+https://github.com/kti/python-netfilterqueue`)
+
+Next, install the app requirements from the Brutus root directory:
+```
+pip3 install -r requirements.txt 
+```
+
+Brutus functions best when used on a machine running Kali Linux. That said, Brutus is relatively cross-compatible on macOS and Linux systems. Brutus' modules are wrapped with a custom utility that programatically resolves the controller's OS; Brutus thus will act accordingly and safe-guard the controller from launching features which are not compatible (per their OS) or otherwise are not ready to be utilized (i.e. attempting to deploy a payload prior to compiling it).
+
+The modules which necessitate the controller having established themselves as the "MITM" (man-in-the-middle) will prompt the controller, ensuring that certain prerequisite operations have been performed. This is likewise the case with modules which require HTTPS downgrading, though the current incarnation of Brutus automatically downgrades HTTPS to HTTP when launching one of the network-based exploitation modules.
+
+Please report bugs by filing an issue and providing as much information as possible. For proposed solutions, open a pull request.
+
 ## <a name="usage"></a> Usage
 
 ## <a name="features"></a> Brutus: Features and Included Modules
