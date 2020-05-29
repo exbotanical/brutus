@@ -27,7 +27,7 @@ Encoding: UTF-8
         + [General: Persistence Methods](#persistence)
  - [Development Notes](#notes)
 
-## <a name="intro"></a> Brutus: and Introduction
+## <a name="intro"></a> Brutus: an Introduction
 Brutus is a Python-powered educational toolkit which automates pre and post-connection network-based exploits, as well as web-based reconnaissance. As a light-weight framework, Brutus aims to minimize reliance on third-party dependencies. Optimized for Kali Linux, Brutus is also compatible with macOS and most Linux distributions, featuring a fully interactive command-line interface which dynamically applies OS-resolution for platform-contingent functions, and type-checking and data validation against user-input. 
 
 Brutus is designed to be an extensible framework to which new modules can easily be integrated.
