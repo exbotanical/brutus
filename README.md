@@ -32,6 +32,8 @@ Brutus is a Python-powered educational toolkit which automates pre and post-conn
 
 Brutus is designed to be an extensible framework to which new modules can easily be integrated.
 
+If you're just interested in some Python hacking, feel free to pull the scripts directly - each module is essentially a different script that you can run directly if you just pipe your own inputs in (e.g. the MAC address changer).
+
 ## <a name="demo"></a> Demos
 Web Scanning and Payload Compilation Demo: [watch mp4](https://streamable.com/scybvn)
 ![demo](https://github.com/MatthewZito/Brutus/blob/dev/assets/brutus_demo1.gif)
