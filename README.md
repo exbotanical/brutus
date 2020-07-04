@@ -7,7 +7,7 @@ Encoding: UTF-8
 ```
 ## Table of Contents
 
- - [Introduction](#intro) 
+ - [Introduction](#intro) x
     * [About](#about)
     * [Demos](#demo)
  - [Installation](#install) 
@@ -46,6 +46,8 @@ That is, if you're looking at this code and wondering why Brutus violates the lo
 Brutus began as an explorative project - I was taking popular pen-testing tools or paradigms (e.g. Bettercap, Wireshark, et al; the latter - ARP Spoofing, for instance) and figuring out how they worked, and how to create my own incarnations with Python...all while relying on as few dependencies (beyond the standard library, that is) as I could. Some such endeavors truly would be 're-inventing the wheel', such as surrogating Scapy with a custom module; for reasons quite apparent, I did not endeavor to do this. 
 
 That's all for now. I am releasing a beta version of this and will assuredly add more to this section as my code gets picked apart ;-)
+
+Again, feel free to take and use Brutus modules as standalone scripts. Note, I do appreciate being accredited. 
 
 ## <a name="install"></a> Installation
 Greater specificity will be added to this section in time. For now:
@@ -115,7 +117,7 @@ Follows are the included modules:
     * Compress files on host machine
     * Return all host information
     * Direct download from host
-    * Automated sockets - hosts/slaves can reconnect even if server goes down.
+    * Automated sockets - hosts/agents can reconnect even if server goes down.
 
 **Inter-Network Botnet**
   - HTTPS-based botnet with optional SSL verification. Robust Command and Control server with full 
@@ -266,17 +268,17 @@ The Brutus botnet really is two separate modules: an intra-network botnet, and a
 
 The inner-network botnet is a far more robust architecture, intended for less ephemeral applications than the intra-network system. It must also be noted that this system architecture is based on and uses code from SweetSoftware's Ares botnet. This incarnation of Ares is far more performant, scalable, and secure. 
 
-This botnet optionally utilizes SSL verification. Brutus spawns a web interface and SQL database per user-provided configurations; these configurations are then utilized in compilation of client/slave instances. This means a user can launch the user-interface and manage their targets therein, all from Brutus' interactive command line.
+This botnet optionally utilizes SSL verification. Brutus spawns a web interface and SQL database per user-provided configurations; these configurations are then utilized in compilation of client/agent instances. This means a user can launch the user-interface and manage their targets therein, all from Brutus' interactive command line.
 
-Compiled slaves are OS-agnostic and persistent. They are dynamically compiled with a `connect_interval` and a `max_failed_connections` int - if the slave fails to connect, at *`connect_interval`* seconds, *`max_failed_connections`* times, the slave self destructs (and cleans up after itself). As aforementioned, SSL verification can be configured such that the slaves must associate with the Command and Control server upon report. 
+Compiled agents are OS-agnostic and persistent. They are dynamically compiled with a `connect_interval` and a `max_failed_connections` int - if the agent fails to connect, at *`connect_interval`* seconds, *`max_failed_connections`* times, the agent self destructs (and cleans up after itself). As aforementioned, SSL verification can be configured such that the agents must associate with the Command and Control server upon report. 
 
-The slave instances keep local tmp logs to which all reverse shell, jobs/processes and assignments, and epistemological output is written. These ephemeral logs are then posted to the Command and Control server's `report` API endpoint. 
+The agent instances keep local tmp logs to which all reverse shell, jobs/processes and assignments, and epistemological output is written. These ephemeral logs are then posted to the Command and Control server's `report` API endpoint. 
 
-The Command and Control server utilizes a RESTful API architecture to coordinate *n* slaves in a scalable and robust manner. Slaves report to their own dynamic endpoints (URL params as slave ID), which are validated against the SQL database, to which all slave information is serialized and written.
+The Command and Control server utilizes a RESTful API architecture to coordinate *n* agents in a scalable and robust manner. agents report to their own dynamic endpoints (URL params as agent ID), which are validated against the SQL database, to which all agent information is serialized and written.
 
-The Command and Control server also utilizes MD5 for user authentication (critical functions, such as removing/killing slaves are restricted to the admin user) - the primary controller is the administrator, though user accounts can be spawned and deleted should the controller wish to allow other users access to the botnet C2 instance at any point in given time.
+The Command and Control server also utilizes MD5 for user authentication (critical functions, such as removing/killing agents are restricted to the admin user) - the primary controller is the administrator, though user accounts can be spawned and deleted should the controller wish to allow other users access to the botnet C2 instance at any point in given time.
 
-A major next step in development is a security module, which will wrap all correspondence in AES encryption. I am also currently working on enforcing a public/private key-pair exchange on initial client/slave report, and coding a custom Diffie-Hellman script for associating. 
+A major next step in development is a security module, which will wrap all correspondence in AES encryption. I am also currently working on enforcing a public/private key-pair exchange on initial client/agent report, and coding a custom Diffie-Hellman script for associating. 
 
 *Note: This module is under development*
 
