@@ -61,6 +61,7 @@ Next, install the app requirements from the Brutus root directory:
 ```
 pip3 install -r requirements.txt 
 ```
+NOTE: Don't forget to unzip any wordlists or assets in the config folder!
 
 Brutus functions best when used on a machine running Kali Linux. That said, Brutus is relatively cross-compatible on macOS and Linux systems. Brutus' modules are wrapped with a custom utility that programatically resolves the controller's OS; Brutus thus will act accordingly and safe-guard the controller from launching features which are not compatible (per their OS) or otherwise are not ready to be utilized (i.e. attempting to deploy a payload prior to compiling it).
 
