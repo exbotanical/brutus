@@ -138,7 +138,7 @@ class Commander:
 
     def shell(self):
         while True:
-            command_prompt = "* Slave#~%s: " % str(self.ip)  # py3
+            command_prompt = "* Bot#~%s: " % str(self.ip)  # py3
             command = input(command_prompt) # py3
             command = command.split(" ") # convert to list
             primary_command = command[0]

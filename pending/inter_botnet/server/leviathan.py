@@ -13,7 +13,7 @@ from flask import Flask
 from flask_script import Manager
 
 from models import db
-from models import Slave
+from models import Bot
 from models import Command
 from webui import webui
 from api import api

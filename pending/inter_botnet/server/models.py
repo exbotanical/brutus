@@ -8,8 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class Slave(db.Model):
-    __tablename__ = 'slaves'
+class Bot(db.Model):
+    __tablename__ = 'bots'
     id = db.Column(db.String(100), primary_key=True)
     display_name = db.Column(db.String(100))
     last_online = db.Column(db.DateTime())
@@ -26,7 +26,7 @@ class Slave(db.Model):
 
     def push_command(self, cmdline):
         cmd = Command()
-        cmd.slave = self
+        cmd.bot = self
         cmd.cmdline = cmdline
         cmd.timestamp = datetime.now()
         db.session.add(cmd)
@@ -43,8 +43,8 @@ class Slave(db.Model):
 class Command(db.Model):
     __tablename__ = 'commands'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    slave_id = db.Column(db.Integer(), db.ForeignKey('slaves.id'))
-    slave = db.relationship('Slave', backref=db.backref('commands', lazy='dynamic'))
+    bot_id = db.Column(db.Integer(), db.ForeignKey('bots.id'))
+    bot = db.relationship('Bot', backref=db.backref('commands', lazy='dynamic'))
     cmdline = db.Column(db.String(255))
     timestamp = db.Column(db.DateTime(), default=datetime.now)
 

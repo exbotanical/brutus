@@ -1,8 +1,8 @@
 <pre id="termtext" style="width:80%">
-{% if slave.output %}
-{{ slave.output | safe }}
+{% if bot.output %}
+{{ bot.output | safe }}
 {% endif %}
-{% for cmd in slave.commands %}
+{% for cmd in bot.commands %}
 Pending: {{ cmd.cmdline }}
 {% endfor %}
 </pre>

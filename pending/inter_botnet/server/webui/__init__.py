@@ -16,7 +16,7 @@ from flask import send_from_directory
 from flask import current_app
 
 from models import db
-from models import Slave
+from models import Bot
 from models import Command
 from models import User
 
@@ -106,29 +106,29 @@ def logout():
     return redirect(url_for('webui.login'))
 
 
-@webui.route('/slaves')
+@webui.route('/bots')
 @require_admin
-def slave_list():
-    slaves = Slave.query.order_by(Slave.last_online.desc())
-    return render_template('slave_list.html', slaves=slaves)
+def bot_list():
+    bots = Bot.query.order_by(Bot.last_online.desc())
+    return render_template('bot_list.html', bots=bots)
 
 
-@webui.route('/slaves/<slave_id>')
+@webui.route('/bots/<bot_id>')
 @require_admin
-def slave_detail(slave_id):
-    slave = Slave.query.get(slave_id)
-    if not slave:
+def bot_detail(bot_id):
+    bot = Bot.query.get(bot_id)
+    if not bot:
         abort(404)
-    return render_template('slave_detail.html', slave=slave)
+    return render_template('bot_detail.html', bot=bot)
 
 
-@webui.route('/slaves/rename', methods=['POST'])
-def rename_slave():
+@webui.route('/bots/rename', methods=['POST'])
+def rename_bot():
     if 'newname' in request.form and 'id' in request.form:
-        slave = Slave.query.get(request.form['id'])
-        if not slave:
+        bot = Bot.query.get(request.form['id'])
+        if not bot:
             abort(404)
-        slave.rename(request.form['newname'])
+        bot.rename(request.form['newname'])
     else:
         abort(400)
     return ''

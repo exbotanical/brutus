@@ -1,4 +1,4 @@
-{% with previous_page=url_for('webui.slave_list'), title=slave.display_name %}
+{% with previous_page=url_for('webui.bot_list'), title=bot.display_name %}
 {% include "header.html" %}
 {% endwith %}
 
@@ -84,7 +84,7 @@
 		 * Send the command in the command field to the server and add it in the command history.
 		 */
 		function sendCommand() {
-			$.post("{{ url_for('api.push_command', slave_id=slave.id) }}", 
+			$.post("{{ url_for('api.push_command', bot_id=bot.id) }}", 
 					{'cmdline': $('#cmd').val()}, function(){});
 					
 			addComandToHistory($('#cmd').val());
@@ -104,7 +104,7 @@
 		  */
 		function refreshTerminal() {
 
-			$.get("{{ url_for('api.slave_console', slave_id=slave.id) }}", function(data) {
+			$.get("{{ url_for('api.bot_console', bot_id=bot.id) }}", function(data) {
 				var oldScrollPosition, newScrollPosition;
 				var scrollToBottom = true;
 				var currentHtmlHash = $.md5(data);

