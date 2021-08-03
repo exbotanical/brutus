@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-import threading
 import os
-import subprocess
 import platform
 
 import inquirer
@@ -171,19 +169,6 @@ if __name__ == "__main__":
       main()
    except KeyboardInterrupt:
       print("[-] Done.")
-"""
-from PyInquirer import style_from_dict, Token, prompt
-from PyInquirer import Validator, ValidationError
-
-
-style = style_from_dict({
-    Token.QuestionMark: '#E91E63 bold',
-    Token.Selected: '#673AB7 bold',
-    Token.Instruction: '',  # default
-    Token.Answer: '#2196f3 bold',
-    Token.Question: '',
-})
-"""
 
 
 
