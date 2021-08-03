@@ -1,4 +1,9 @@
 # The Brutus Exploitation Framework
+
+## Important Note
+
+As of 2 August 2021, this entire application is being rewritten as a multi-threaded system with native support for plugins and extensibility. This will also entail a more robust API and greater reliability. Drop us a star and a follow to receive updates and partake in the fun!
+
 ```
 Author: Matthew T Zito (goldmund)
 License: GPL 3.0
