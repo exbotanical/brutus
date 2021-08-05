@@ -1,5 +1,1 @@
-*pyc
-*vscode
-*__pycache__*
-.DS_Store
-config.ini
+__pycache__
