@@ -6,7 +6,7 @@ unsafe-load-any-extension=no
 
 [FORMAT]
 
-indent-string="    "
+indent-string='\t'
 expected-line-ending-format=LF
 no-space-check=empty-line
 
