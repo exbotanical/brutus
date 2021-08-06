@@ -2,12 +2,27 @@ import subprocess
 
 from os import path
 
-from brutus.utils.fs import resolve_scriptsdir
+from .fs import resolve_scriptsdir
+from .errors.shell_err import ScriptFailed
 
-def invoke_shell_script(script: str, args=None) -> int:
-	script_path = resolve_scriptsdir(script)
+def invoke_script(
+    script: str,
+    args: str = None,
+    throw_on_fail: bool = True,
+    autoresolve = True
+) -> int:
 
-	if not path.exists(script_path):
-		return 1
+    if autoresolve:
+        script_path = resolve_scriptsdir(script)
+    else:
+        script_path = script
 
-	return subprocess.call(['bash', script_path, args])
+    if not path.exists(script_path):
+        raise FileNotFoundError
+
+    proc = subprocess.Popen(['bash', script_path, args])
+    proc.wait()
+    (stdout, stderr) = proc.communicate()
+
+    if proc.returncode != 0 and throw_on_fail:
+        raise ScriptFailed(stderr=stderr, returncode=proc.returncode)

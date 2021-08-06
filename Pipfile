@@ -8,6 +8,16 @@ inquirer = "*"
 
 [dev-packages]
 pylint = "*"
+autopep8 = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+test = "python3 -m unittest discover -s brutus -p \"*_test.py\" -f"
+lint = "pylint brutus/"
+fmt = "autopep8 -i -r -a -a -j 4 brutus/"
+run = "python3 -m brutus"
+
+setup = "pre-commit install"

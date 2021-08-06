@@ -1,0 +1,22 @@
+# fail_fast: true
+repos:
+
+- repo: local
+  hooks:
+    
+    - id: lint
+      name: lint
+      entry: pipenv run lint
+      language: system
+      
+    - id: test
+      name: test
+      entry: pipenv run test
+      language: system
+
+# - repo: https://github.com/compilerla/conventional-pre-commit
+#   rev: v1.0.0 sha or tag>
+#   hooks:
+
+#     - id: conventional-pre-commit
+#       stages: [commit-msg]
