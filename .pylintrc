@@ -1,5 +1,6 @@
 [MASTER]
 
+ignore=__tests__
 persistent = no
 jobs = 4
 unsafe - load - any - extension = no
