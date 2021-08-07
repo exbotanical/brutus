@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d777a47cb11564937d213d73bf088cc91eced0ee2d34a488b35c06c9e8abe110"
+            "sha256": "81bd8eb58b83eb44433af542c37cb1a8be4b8d688d581b8cd8f66028d480df91"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -73,14 +73,6 @@
             "markers": "python_version ~= '3.6'",
             "version": "==2.6.6"
         },
-        "autopep8": {
-            "hashes": [
-                "sha256:276ced7e9e3cb22e5d7c14748384a5cf5d9002257c0ed50c0e075b68011bb6d0",
-                "sha256:aa213493c30dcdac99537249ee65b24af0b2c29f2e83cd8b3f68760441ed0db9"
-            ],
-            "index": "pypi",
-            "version": "==1.5.7"
-        },
         "backports.entry-points-selectable": {
             "hashes": [
                 "sha256:988468260ec1c196dab6ae1149260e2f5472c9110334e5d51adcb77867361f6a",
@@ -113,11 +105,11 @@
         },
         "identify": {
             "hashes": [
-                "sha256:242332b3bdd45a8af1752d5d5a3afb12bee26f8e67c4be06e394f82d05ef1a4d",
-                "sha256:a510cbe155f39665625c8a4c4b4f9360cbce539f51f23f47836ab7dd852db541"
+                "sha256:7199679b5be13a6b40e6e19ea473e789b11b4e3b60986499b1f589ffb03c217c",
+                "sha256:7bc6e829392bd017236531963d2d937d66fc27cadc643ac0aba2ce9f26157c79"
             ],
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==2.2.12"
+            "version": "==2.2.13"
         },
         "isort": {
             "hashes": [
@@ -179,19 +171,11 @@
         },
         "pre-commit": {
             "hashes": [
-                "sha256:764972c60693dc668ba8e86eb29654ec3144501310f7198742a767bec385a378",
-                "sha256:b679d0fddd5b9d6d98783ae5f10fd0c4c59954f375b70a58cbe1ce9bcf9809a4"
+                "sha256:2386eeb4cf6633712c7cc9ede83684d53c8cafca6b59f79c738098b51c6d206c",
+                "sha256:ec3045ae62e1aa2eecfb8e86fa3025c2e3698f77394ef8d2011ce0aedd85b2d4"
             ],
             "index": "pypi",
-            "version": "==2.13.0"
-        },
-        "pycodestyle": {
-            "hashes": [
-                "sha256:514f76d918fcc0b55c6680472f0a37970994e07bbb80725808c17089be302068",
-                "sha256:c389c1d06bf7904078ca03399a4816f974a1d590090fecea0c63ec26ebaf1cef"
-            ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==2.7.0"
+            "version": "==2.14.0"
         },
         "pylint": {
             "hashes": [
