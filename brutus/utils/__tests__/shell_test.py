@@ -1,24 +1,25 @@
 import unittest
 from os import path
 
+from ..exceptions import ScriptFailed
 from ..shell import invoke_script
-from ..errors.shell_err import ScriptFailed
 
-FIXTURES = path.abspath(path.join(
-    path.dirname(__file__), 'fixtures'))
+FIXTURES = path.abspath(path.join(path.dirname(__file__), "fixtures"))
+
 
 def fixture(p: str) -> str:
     return path.join(FIXTURES, p)
+
 
 class TestShellUtils(unittest.TestCase):
     """
     Test shell utilities
     """
+
     def test_invoke_script_ok(self):
         try:
-            invoke_script(script=fixture('exit_with.bash'),
-                        args='0', autoresolve=False)
-        except:
+            invoke_script(script=fixture('exit_with.bash'), args='0', autoresolve=False)
+        except BaseException:
             self.fail('invoke_script raised an unexpected exception')
 
     def test_invoke_script_nonexistent_file(self):
@@ -34,8 +35,7 @@ class TestShellUtils(unittest.TestCase):
         a `ScriptFailed` exception being raised
         """
         with self.assertRaises(ScriptFailed):
-            invoke_script(script=fixture('exit_with.bash'),
-                          args='1', autoresolve=False)
+            invoke_script(script=fixture('exit_with.bash'), args='1', autoresolve=False)
 
 
 if __name__ == '__main__':
