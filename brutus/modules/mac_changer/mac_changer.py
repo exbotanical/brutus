@@ -10,16 +10,17 @@ import subprocess
 from brutus.utils.generators import generate_n_ints
 
 # colon-delimited MAC address
-MACADDR_REGEX = '[0-9a-f]{2}(:)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$'
+MACADDR_REGEX = '^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$'
+OUI_REGEX = '^([0-9A-Fa-f]{2}:){2}([0-9A-Fa-f]{2})$'
 
 
 def get_interfaces() -> list:
     """Retrieve a list of present network interface names
 
     Returns:
-        list: tuples of interface names, indices
+        list: interface names
     """
-    return socket.if_nameindex()
+    return [i[1] for i in socket.if_nameindex()]
 
 
 def get_current_macaddr(interface: str) -> str:
@@ -41,7 +42,7 @@ def get_current_macaddr(interface: str) -> str:
     return ':'.join('%02x' % b for b in datum[18:24])
 
 
-def change_mac_address(interface: str, new_macaddr: str) -> None:
+def change_macaddr(interface: str, new_macaddr: str) -> None:
     """Uses ifconfig to reassign a given device's MAC address
 
     Args:
@@ -83,8 +84,27 @@ def validate_macaddr_format(new_macaddr: str) -> bool:
     Returns:
         bool: valid format?
     """
-    valid_mac_res = re.search(MACADDR_REGEX, new_macaddr)
-    return valid_mac_res is not None
+
+    is_valid = re.search(MACADDR_REGEX, new_macaddr)
+    return is_valid is not None
+
+
+def validate_oui_format(oui: str) -> bool:
+    """Basic validation of the OUI format as a
+    series of colon-delimited octet values
+
+    Args:
+        oui (str): colon-delimited octet OUI
+            to validate
+
+    Returns:
+        bool: valid format?
+
+    TODO:
+        validate uaa/laa/(multi|uni)cast bit(s)
+    """
+    is_valid = re.search(OUI_REGEX, oui)
+    return is_valid is not None
 
 
 def generate_macaddr(
@@ -114,7 +134,7 @@ def generate_macaddr(
 
     delimiter = ':'
 
-    if oui is not None and re.search(r'\w\w:\w\w:\w\w', oui) is not None:
+    if isinstance(oui, str) and validate_oui_format(oui):
         # convert OUI to bytes
         byte_oui = [int(chunk, 16) for chunk in oui.split(delimiter)]
 
