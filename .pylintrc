@@ -20,4 +20,4 @@ good-names=cb,fn,n
 min-similarity-lines=300
 
 [MESSAGES CONTROL]
-disable=E0401,R1732,E0611
+disable=E0401,R1732,E0611,R0903,C0103,W0511
