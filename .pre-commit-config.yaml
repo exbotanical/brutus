@@ -63,6 +63,8 @@ repos:
       args: # https://github.com/python/mypy/issues/8944
         - --explicit-package-bases
         - --namespace-packages
+        - --install-types
+        - --non-interactive
 
 - repo: https://github.com/compilerla/conventional-pre-commit
   rev: v1.0.0

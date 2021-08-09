@@ -25,7 +25,9 @@ def cast_and_validate_portrange(answers: dict, end_port: int) -> bool:
 
 
 questions = [
-    inquirer.Text(name='host', message='Enter the hostname (do not include protocol)'),
+    inquirer.Text(
+        name='hostname', message='Enter the hostname (do not include protocol)'
+    ),
     inquirer.Text(
         name='start_port',
         message='We\'ll need a range of ports to scan. Enter the starting port',
@@ -40,6 +42,7 @@ questions = [
         name='n_threads',
         message='Enter the number of threads to utilize',
         default='200',
+        validate=lambda _, n_threads: isinstance(int(n_threads), int),
     ),
 ]
 
@@ -49,21 +52,21 @@ def run() -> None:
 
     TODO: add logging decorator
     """
-    host, start_port, end_port, n_threads = destructure(
-        inquirer.prompt(questions), 'host', 'start_port', 'end_port', 'n_threads'
+    hostname, start_port, end_port, n_threads = destructure(
+        inquirer.prompt(questions), 'hostname', 'start_port', 'end_port', 'n_threads'
     )
 
     scanner = PortScanner(
-        host=host,
+        hostname=hostname,
         start_port=int(start_port),
         end_port=int(end_port),
         n_threads=int(n_threads),
     )
 
-    if not scanner.validate_host(host=host):
-        Logger.fail(f'Hostname {host} cannot be resolved')
+    if not scanner.validate_hostname(hostname=hostname):
+        Logger.fail(f'hostname {hostname} cannot be resolved')
         return
 
     scanner.run()
 
-    Logger.success(f'Scan of {host}, ports {start_port} - {end_port} complete')
+    Logger.success(f'Scan of {hostname}, ports {start_port} - {end_port} complete')

@@ -11,14 +11,21 @@ retrieved in a thread-safe manner
 """
 from queue import Queue
 from threading import Thread
-from typing import Any, Callable
+from typing import Any, Callable, Generator, Union
 
 
 class ThreadedTaskQueue:
-    """Implements a thread-safe queue and daemon thread-runner"""
+    """Implements a thread-safe queue and daemon thread-runner
+    Each daemon thread enters into an infinite loop, invoking the provided callback
+    until the task queue is empty
+    """
 
     def __init__(
-        self, callback: Callable, n_threads: int, tasks: list, arg: Any
+        self,
+        callback: Callable,
+        n_threads: int,
+        tasks: Union[list, Generator],
+        arg: Any,
     ) -> None:
 
         # thread routine
