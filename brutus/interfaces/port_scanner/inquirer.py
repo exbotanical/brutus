@@ -3,7 +3,7 @@ Inquirer interface
 """
 import inquirer  # type: ignore
 
-from brutus.modules.port_scanner.port_scanner import PortScanner
+from brutus.modules.port_scanner.PortScanner import PortScanner
 from brutus.utils.log import Logger
 
 from ..utils.inquirer_utils import destructure

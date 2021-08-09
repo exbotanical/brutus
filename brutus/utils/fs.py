@@ -89,21 +89,22 @@ def resolve_rootdir(*fpaths: str) -> str:
     return path.join(ROOT_DIR_ABS, *fpaths)
 
 
-def resolve_scriptsdir(fpath: str) -> str:
+def resolve_scriptsdir(filename: str) -> str:
     """Resolve the provided path on the Brutus scripts directory\n
     NOTE: The returned path is not guaranteed to exist
 
     Args:
-        fpath (str): The path to resolve from the scripts directory;
+        filename (str): The path to resolve from the scripts directory;
             typically a single filename
 
     Returns:
-        str: An absolute path to the specified `fpath` in the Brutus scripts directory
+        str: An absolute path to the specified `filename` in the
+        Brutus scripts directory
     """
-    return resolve_rootdir('scripts', fpath)
+    return resolve_rootdir('scripts', filename)
 
 
-def split_file(filename: str, n_chunks: int) -> Generator:
+def split_file(abs_filename: str, n_chunks: int) -> Generator:
     """Split a file into N chunks by seeking and moving a file pointer.
     Important to note about this method is it is optimized for speed
     and not precision.
@@ -115,16 +116,17 @@ def split_file(filename: str, n_chunks: int) -> Generator:
     multi-processing or multi-threading in place to handle the resulting chunks.
 
     Args:
-        filename (str): Absolute file path. Caller is responsible for ensuring it exists
+        abs_filename (str): Absolute file path. Caller is responsible for
+        ensuring it exists
         n_chunks (int): Number of chunks to break the file into
 
     Yields:
         list: A list of file readers set at varying cursor positions
     """
-    size = path.getsize(filename)
+    size = path.getsize(abs_filename)
     chunk_size = size // n_chunks
 
-    fp = open(filename, 'rb')
+    fp = open(abs_filename, 'rb')
 
     # seek in the file chunk_size bytes, then read a line to get a line ending
     pos = 0
@@ -140,6 +142,6 @@ def split_file(filename: str, n_chunks: int) -> Generator:
 
         pos = fp.tell()
 
-        yield FileChunk(filename, prev_pos, pos)
+        yield FileChunk(abs_filename, prev_pos, pos)
 
     fp.close()

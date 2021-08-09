@@ -5,17 +5,18 @@ from typing import Generator
 
 import requests
 
+from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
 from brutus.utils.fs import FileChunk, split_file  # pylint: disable=W0611
 from brutus.utils.log import Logger
 from brutus.utils.socket import hostname_resolves
 
 
-class SubdomainScanner(ThreadedTaskQueue):
+class SubdomainScanner(BaseBrutusModule, ThreadedTaskQueue):
     """Implements a scanner that tests each word in a wordlist against a given domain.
 
     Inherits:
-        ThreadedTaskQueue
+        BaseBrutusModule, ThreadedTaskQueue
     """
 
     def __init__(
@@ -30,7 +31,15 @@ class SubdomainScanner(ThreadedTaskQueue):
         self.f_path = wordlist_path
         self.protocol = protocol
 
-        super().__init__(
+        # read about MRO in Python to see more ways to do this
+        # otherwise, we go with the simplest because this app is supposed
+        # to be educational
+        BaseBrutusModule.__init__(
+            self, requires_mitm_state=False, requires_same_network=False
+        )
+
+        ThreadedTaskQueue.__init__(
+            self,
             callback=self.subdomain_scan_routine,
             arg=domain,
             # read the entire wordlist into memory,

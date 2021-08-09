@@ -3,15 +3,18 @@ Inquirer interface
 """
 import inquirer  # type: ignore
 
-from brutus.modules.subdomain_scanner.subdomain_scanner import SubdomainScanner
+from brutus.modules.subdomain_scanner.SubdomainScanner import SubdomainScanner
 from brutus.utils.log import Logger
 
 from ..utils.inquirer_utils import destructure
 
 questions = [
     inquirer.Text(name='domain', message='Enter the domain to scan'),
-    inquirer.Text(
-        name='wordlist_path', message='Enter the wordlist file path (absolute)'
+    inquirer.Path(
+        name='wordlist_path',
+        message='Enter the wordlist file path (absolute)',
+        exists=True,
+        path_type=inquirer.Path.FILE,
     ),
     inquirer.Text(
         name='protocol',

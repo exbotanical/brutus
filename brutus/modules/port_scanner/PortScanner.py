@@ -5,6 +5,7 @@ task queue in which units of work are delegated to daemon threads
 import socket
 from threading import Lock
 
+from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
 from brutus.utils.log import Logger
 from brutus.utils.socket import hostname_resolves
@@ -13,7 +14,7 @@ from brutus.utils.socket import hostname_resolves
 lock = Lock()
 
 
-class PortScanner(ThreadedTaskQueue):
+class PortScanner(BaseBrutusModule, ThreadedTaskQueue):
     """Initiate a port scan on `hostname` from `start_port` to `end_port`.
     Ports will be placed in a queue, then delegated to threads in a concurrent manner
 
@@ -24,7 +25,7 @@ class PortScanner(ThreadedTaskQueue):
         n_threads (int): Number of threads, at maximum, to spawn
 
     Inherits:
-        ThreadedTaskQueue
+        BaseBrutusModule, ThreadedTaskQueue
     """
 
     def __init__(
@@ -35,7 +36,12 @@ class PortScanner(ThreadedTaskQueue):
             port for port in range(start_port, end_port)  # pylint: disable=R1721
         ]  # TODO use a lazy / async iterator or generator
 
-        super().__init__(
+        BaseBrutusModule.__init__(
+            self, requires_mitm_state=False, requires_same_network=False
+        )
+
+        ThreadedTaskQueue.__init__(
+            self,
             callback=self.port_scan_routine,
             arg=hostname,
             tasks=ports,
