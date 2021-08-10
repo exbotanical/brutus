@@ -1,6 +1,9 @@
 """
 Brutus is an educational exploitation kit
 """
-from .interfaces.packet_sniffer.inquirer import run
+from .interfaces.compilers.keylogger.inquirer import run
 
-run()
+try:
+    run()
+except KeyboardInterrupt:
+    print('hi')

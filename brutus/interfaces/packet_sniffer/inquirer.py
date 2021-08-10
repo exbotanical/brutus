@@ -16,7 +16,7 @@ questions = [
 
 
 def routine_callback(match: tuple) -> None:
-    """[summary]
+    """Packet sniffer callback
 
     Args:
         match (tuple): A packet that matches our filter; consists
