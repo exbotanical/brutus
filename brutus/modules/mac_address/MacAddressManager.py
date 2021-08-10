@@ -24,16 +24,7 @@ class MacAddressManager(BaseBrutusModule):
     """
 
     def __init__(self):
-        super().__init__(requires_mitm_state=False, requires_same_network=False)
-
-    @staticmethod
-    def get_interfaces() -> list:
-        """Retrieve a list of present network interface names
-
-        Returns:
-            list: interface names
-        """
-        return [i[1] for i in socket.if_nameindex()]
+        super().__init__(self, requires_mitm_state=False, same_network_as_target=False)
 
     @staticmethod
     def get_current_macaddr(interface: str) -> str:

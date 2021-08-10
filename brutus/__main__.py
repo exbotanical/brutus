@@ -1,6 +1,6 @@
 """
 Brutus is an educational exploitation kit
 """
-from .interfaces.subdomain_scanner.inquirer import run
+from .interfaces.packet_sniffer.inquirer import run
 
 run()

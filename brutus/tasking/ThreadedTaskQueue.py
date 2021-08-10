@@ -31,10 +31,11 @@ class ThreadedTaskQueue:
         # thread routine
         self.callback = callback
 
-        # argument passed to `callback`, after task
-        self.arg = arg
+        # argument passed to `callback`, after
+        # make this an object if more than 1 argument is needed
+        self.args = arg
 
-        # units of work; this must be an iterable
+        # units of work; this must be an iterable object
         # place in the task_queue and passed to `callback` concurrently
         self.tasks = tasks
 
@@ -55,7 +56,7 @@ class ThreadedTaskQueue:
                 self.task_queue.get()
             )  # we do not need to lock here; this is thread-safe by design
             # invoke callback with work unit
-            self.callback(task, self.arg)
+            self.callback(task, self.args)
 
             self.task_queue.task_done()
 
