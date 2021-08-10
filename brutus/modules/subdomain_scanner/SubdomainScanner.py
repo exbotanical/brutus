@@ -9,7 +9,7 @@ from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
 from brutus.utils.fs import FileChunk, split_file  # pylint: disable=W0611
 from brutus.utils.log import Logger
-from brutus.utils.socket import hostname_resolves
+from brutus.utils.networking import hostname_resolves
 
 
 class SubdomainScanner(BaseBrutusModule, ThreadedTaskQueue):

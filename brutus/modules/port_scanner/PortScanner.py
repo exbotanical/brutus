@@ -8,7 +8,7 @@ from threading import Lock
 from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
 from brutus.utils.log import Logger
-from brutus.utils.socket import hostname_resolves
+from brutus.utils.networking import hostname_resolves
 
 # prevent weird output race conditions
 lock = Lock()

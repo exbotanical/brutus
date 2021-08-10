@@ -12,6 +12,7 @@ class BaseBrutusModule:
         same_network_as_target: bool = False,
         multiprocessing: bool = False,
         strip_ssl: bool = False,
+        needs_port_fwd: bool = False,
     ) -> None:
 
         # does the module require the user to be in a MITM state?
@@ -25,6 +26,9 @@ class BaseBrutusModule:
 
         # does the module require downgrading SSL connections?
         self.downgrade_https = strip_ssl
+
+        # do we need port forwarding to be enabled?
+        self.needs_port_fwd = needs_port_fwd
 
     @staticmethod
     def get_interfaces() -> list:
