@@ -24,7 +24,12 @@ class ArpSpoofer(BaseBrutusModule):
         self.target_mac = self.resolve_mac_from_ip(self.target_ip)
         self.gateway_mac = self.resolve_mac_from_ip(self.gateway_ip)
 
-        super().__init__(requires_mitm_state=False, strip_ssl=True, needs_port_fwd=True)
+        super().__init__(
+            requires_mitm_state=False,
+            strip_ssl=True,
+            needs_port_fwd=True,
+            module_path='brutus.interfaces.arp_spoofer.inquirer',
+        )
 
     @staticmethod
     def resolve_mac_from_ip(ip_addr) -> str:

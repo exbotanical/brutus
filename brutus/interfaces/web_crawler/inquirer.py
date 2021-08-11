@@ -92,3 +92,7 @@ def run() -> None:
         loop.run_forever()
 
         loop.close()
+
+
+if __name__ == '__main__':
+    run()

@@ -37,7 +37,10 @@ class PortScanner(BaseBrutusModule, ThreadedTaskQueue):
         ]  # TODO use a lazy / async iterator or generator
 
         BaseBrutusModule.__init__(
-            self, requires_mitm_state=False, same_network_as_target=False
+            self,
+            requires_mitm_state=False,
+            same_network_as_target=False,
+            module_path='brutus.interfaces.port_scanner.inquirer',
         )
 
         ThreadedTaskQueue.__init__(

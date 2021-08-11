@@ -23,7 +23,12 @@ class PacketSniffer(BaseBrutusModule, CancellableThread):
         self.callback = callback
         self.socket = None
 
-        BaseBrutusModule.__init__(self, requires_mitm_state=True, strip_ssl=True)
+        BaseBrutusModule.__init__(
+            self,
+            requires_mitm_state=True,
+            strip_ssl=True,
+            module_path='brutus.interfaces.packet_sniffer.inquirer',
+        )
 
         CancellableThread.__init__(self, daemon=True, callback=self.sniffer_routine)
 

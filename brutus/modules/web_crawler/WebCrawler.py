@@ -48,7 +48,7 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
         max_tasks: int = 10,
     ):
 
-        BaseBrutusModule.__init__(self)
+        super().__init__(module_path='brutus.interfaces.web_crawler.inquirer')
 
         # event loop impl
         self.ev = asyncio.get_event_loop()

@@ -24,7 +24,11 @@ class MacAddressManager(BaseBrutusModule):
     """
 
     def __init__(self):
-        super().__init__(self, requires_mitm_state=False, same_network_as_target=False)
+        super().__init__(
+            equires_mitm_state=False,
+            same_network_as_target=False,
+            module_path='brutus.interfaces.mac_address.inquirer',
+        )
 
     @staticmethod
     def get_current_macaddr(interface: str) -> str:

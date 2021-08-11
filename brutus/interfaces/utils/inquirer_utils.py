@@ -4,16 +4,16 @@ This module contains general utilities for use with Inquirer interfaces
 from typing import Callable
 
 
-def destructure(dictionary: dict, *keys: str) -> list:
+def destructure(answers: dict, *keys: str) -> list:
     """[summary]
 
     Args:
-        dictionary (dict)
+        answers (dict)
 
     Returns:
         list: an ordered list of values corresponding to the provided keys
     """
-    return [dictionary[key] if key in dictionary else None for key in keys]
+    return [answers[key] if key in answers else None for key in keys]
 
 
 def validate(validator: Callable) -> Callable:

@@ -35,7 +35,10 @@ class SubdomainScanner(BaseBrutusModule, ThreadedTaskQueue):
         # otherwise, we go with the simplest because this app is supposed
         # to be educational
         BaseBrutusModule.__init__(
-            self, requires_mitm_state=False, same_network_as_target=False
+            self,
+            requires_mitm_state=False,
+            same_network_as_target=False,
+            module_path='brutus.interfaces.subdomain_scanner.inquirer',
         )
 
         ThreadedTaskQueue.__init__(

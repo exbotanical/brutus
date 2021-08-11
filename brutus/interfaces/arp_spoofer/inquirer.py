@@ -27,10 +27,7 @@ def spoofer_routine(n_packets: int) -> None:
 
 
 def run() -> None:
-    """Run the Inquirer interface
-
-    TODO: add logging decorator
-    """
+    """Run the Inquirer interface"""
     answers = inquirer.prompt(questions)
     target_ip, gateway_ip = destructure(answers, 'target_ip', 'gateway_ip')
 

@@ -38,10 +38,7 @@ questions = [
 
 
 def run() -> None:
-    """Run the Inquirer interface
-
-    TODO: add logging decorator
-    """
+    """Run the Inquirer interface"""
     domain, wordlist_path, protocol, timeout, n_threads = destructure(
         inquirer.prompt(questions),
         'domain',

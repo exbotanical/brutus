@@ -17,7 +17,11 @@ class LocalNetworkScanner(BaseBrutusModule):
     def __init__(self, ip_range: str) -> None:
         self.ip_range = ip_range
 
-        super().__init__(requires_mitm_state=False, same_network_as_target=True)
+        super().__init__(
+            requires_mitm_state=False,
+            same_network_as_target=True,
+            module_path='brutus.interfaces.lan_scanner.inquirer',
+        )
 
     def run(self) -> list:
         """Run the ARP scan
