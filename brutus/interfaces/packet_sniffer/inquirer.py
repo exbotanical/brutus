@@ -27,13 +27,20 @@ def routine_callback(match: tuple) -> None:
 
 
 def run() -> None:
-    """Run the Inquirer interface
-
-    TODO: add logging decorator
-    """
+    """Run the Inquirer interface"""
     answers = inquirer.prompt(questions)
     interface = answers['interface']
 
-    scanner = PacketSniffer(interface=interface, callback=routine_callback)
+    try:
+        scanner = PacketSniffer(interface=interface, callback=routine_callback)
+        scanner.start_sniff()
 
-    scanner.start_sniff()
+    except KeyboardInterrupt:
+        LOGGER.warn('user cancelled the process')
+
+    except Exception:  # pylint: disable=W0703
+        LOGGER.error('a program error occurred')
+
+
+if __name__ == '__main__':
+    run()

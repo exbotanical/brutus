@@ -78,7 +78,7 @@ class PersistenceExecutor:
 
             sys.exit()
 
-    def add_executable_perms(self, file: str):  # pylint: disable=R0201
+    def add_executable_perms(self, file: str):
         """Adds executable permissions to a file
 
         Args:

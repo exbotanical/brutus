@@ -55,10 +55,7 @@ questions = [
 
 
 def run() -> None:
-    """Run the Inquirer interface
-
-    TODO: add logging decorator
-    """
+    """Run the Inquirer interface"""
     answers = inquirer.prompt(questions)
 
     if not answers['confirmation'] is None:
@@ -78,9 +75,20 @@ def run() -> None:
         else:
             new_mac = mac
 
-    MacAddressManager.change_macaddr(interface, new_mac)
+    try:
+        MacAddressManager.change_macaddr(interface, new_mac)
 
-    if MacAddressManager.validate_macaddr_persistence(interface, new_mac):
-        LOGGER.info(f'updated MAC address for interface {interface} to {new_mac}')
-    else:
-        LOGGER.error(f'failed to update MAC address for interface {interface} ')
+        if MacAddressManager.validate_macaddr_persistence(interface, new_mac):
+            LOGGER.info(f'updated MAC address for interface {interface} to {new_mac}')
+        else:
+            LOGGER.error(f'failed to update MAC address for interface {interface} ')
+
+    except KeyboardInterrupt:
+        LOGGER.warn('user cancelled the process')
+
+    except Exception:  # pylint: disable=W0703
+        LOGGER.error('a program error occurred')
+
+
+if __name__ == '__main__':
+    run()

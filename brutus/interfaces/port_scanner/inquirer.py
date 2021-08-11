@@ -67,6 +67,17 @@ def run() -> None:
         LOGGER.error(f'hostname {hostname} cannot be resolved')
         return
 
-    scanner.run()
+    try:
+        scanner.run()
 
-    LOGGER.info(f'Scan of {hostname}, ports {start_port} - {end_port} complete')
+        LOGGER.info(f'Scan of {hostname}, ports {start_port} - {end_port} complete')
+
+    except KeyboardInterrupt:
+        LOGGER.warn('user cancelled the process')
+
+    except Exception:  # pylint: disable=W0703
+        LOGGER.error('a program error occurred')
+
+
+if __name__ == '__main__':
+    run()

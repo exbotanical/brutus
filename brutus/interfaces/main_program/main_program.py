@@ -16,7 +16,7 @@ def run_main_ui():
 
     # begin CLI menu / prompt
     while True:
-        answers = inquirer.prompt(questions)
+        answers = inquirer.prompt(questions, raise_keyboard_interrupt=True)
         selected_option, selected_tool, selected_util = destructure(
             answers, 'selected_option', 'selected_tool', 'selected_util'
         )
@@ -39,11 +39,11 @@ def run_main_ui():
 
             main.enable_monitor_mode(interface)
 
+        elif selected_util == 'mac_address':
+            run_macaddr()
+
         # run any necessary pretask routines
         if selected_tool:
             main.pretask_routine(modules[selected_tool])
 
-            if selected_tool == 'mac_address':
-                run_macaddr()
-            else:
-                main.run_module(modules[selected_tool])
+            main.run_module(modules[selected_tool])

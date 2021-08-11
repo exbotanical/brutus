@@ -32,35 +32,27 @@ class MainBrutusProcessManager(ProcessPool):
         """
         if reqs.requires_mitm_state:
             LOGGER.debug(
-                'you\'ll need to be in a MITM (man in the middle) \
-                state to successfully run this exploit'
+                'you\'ll need to be in a MITM (man in the middle) state to successfully run this exploit'  # pylint: disable=C0301 # noqa:E501
             )
 
         if reqs.same_network_as_target:
             LOGGER.debug(
-                'you\'ll need to be on the same network as \
-                the target to successfully run this exploit'
+                'you\'ll need to be on the same network as the target to successfully run this exploit'  # pylint: disable=C0301 # noqa:E501
             )
 
         if reqs.strip_ssl and not self.ssl_downgraded:
             if self.confirm_fn(
-                'you\'ll need to downgrade HTTPs to successfully \
-                run this exploit; shall we do so now?'
+                'you\'ll need to downgrade HTTPs to successfully run this exploit; shall we do so now?'  # pylint: disable=C0301 # noqa:E501
             ):
-                if self.downgrade_ssl():
-                    return
-
-            LOGGER.warn('you\'ve not downgraded HTTPs - be advised')
+                if not self.downgrade_ssl():
+                    LOGGER.warn('you\'ve not downgraded HTTPs - be advised')
 
         if reqs.needs_port_fwd and not self.port_fwd_enabled:
             if self.confirm_fn(
-                '''you\'ll need to enable port forwarding to successfully
-                run this exploit; shall we do so now?'''
+                'you\'ll need to enable port forwarding to successfully run this exploit; shall we do so now?'  # pylint: disable=C0301 # noqa:E501
             ):
-                if self.enable_portfwd():
-                    return
-
-            LOGGER.warn('you\'ve not enabled port forwarding - be advised')
+                if not self.enable_portfwd():
+                    LOGGER.warn('you\'ve not enabled port forwarding - be advised')
 
     def run_module(self, reqs: BrutusModuleRequirements) -> bool:
         """Run modules with the `multiprocessing` flag set.
@@ -99,7 +91,7 @@ class MainBrutusProcessManager(ProcessPool):
 
         return False
 
-    def enable_portfwd(self) -> bool:  # pylint: disable=R0201
+    def enable_portfwd(self) -> bool:
         """Enable port forwarding on the host machine
 
         Returns:
@@ -114,7 +106,7 @@ class MainBrutusProcessManager(ProcessPool):
 
         return False
 
-    def enable_monitor_mode(self, interface: str) -> bool:  # pylint: disable=R0201
+    def enable_monitor_mode(self, interface: str) -> bool:
         """Enable monitor mode on the given device / interface
 
         Args:

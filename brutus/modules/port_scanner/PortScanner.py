@@ -51,9 +51,7 @@ class PortScanner(BaseBrutusModule, ThreadedTaskQueue):
             n_threads=n_threads,
         )
 
-    def port_scan_routine(  # pylint: disable=R0201
-        self, port: int, hostname: str
-    ) -> None:
+    def port_scan_routine(self, port: int, hostname: str) -> None:
         """The port scan routine, to be invoked by a daemon thread
 
         Args:

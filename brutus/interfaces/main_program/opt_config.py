@@ -61,7 +61,6 @@ top_level_choices = [
 ]
 
 tool_choices = [
-    ('MAC Address Manager', 'mac_address'),
     ('ARP Spoofer', 'arp_spoofer'),
     ('LAN Scanner', 'lan_scanner'),
     ('Packet Sniffer', 'packet_sniffer'),
@@ -72,6 +71,7 @@ tool_choices = [
 ]
 
 util_choices = [
+    ('MAC Address Manager', 'mac_address'),
     ('Enable Monitor Mode', 'monitor_mode'),
     ('Enable Port Forwarding', 'port_fwd'),
     ('Downgrade HTTPs', 'downgrade_https'),

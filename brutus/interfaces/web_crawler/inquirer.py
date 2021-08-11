@@ -2,6 +2,7 @@
 Inquirer interface
 """
 import asyncio
+import signal
 import sys
 
 import inquirer  # type: ignore
@@ -23,6 +24,19 @@ def prepend_protocol(url: str) -> str:
     if '://' not in url:
         url = 'https://' + url
     return url
+
+
+async def do_exit():
+    """Perform an event loop cleanup"""
+    loop = asyncio.get_event_loop()
+    loop.stop()
+
+
+def exit_routine():
+    """Cancellation exit routine"""
+    for task in asyncio.all_tasks():
+        task.cancel()
+    asyncio.ensure_future(do_exit())
 
 
 def run() -> None:
@@ -76,23 +90,24 @@ def run() -> None:
             max_tasks=int(n_tasks),
         )
 
-        loop.run_until_complete(crawler.crawl())  # Crawler gonna crawl
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            loop.add_signal_handler(sig, exit_routine)
 
-    except KeyboardInterrupt:
-        sys.stderr.flush()
-        LOGGER.info('Interrupted')
+        loop.run_until_complete(crawler.crawl())
 
     finally:
-        crawler.run_report()
-
+        sys.stderr.flush()
         asyncio.run(crawler.close())
 
         # next two lines are required for actual aiohttp resource cleanup
-        loop.stop()
-        loop.run_forever()
-
+        crawler.run_report()
         loop.close()
 
 
 if __name__ == '__main__':
-    run()
+    try:
+        run()
+    except asyncio.CancelledError:
+        pass
+    except KeyboardInterrupt:
+        LOGGER.warn('user cancelled the process')

@@ -85,7 +85,6 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
 
         self.root_domains = set()
 
-        self.stats: dict = {}
         self.t0: float = 0
         self.t1: float = 0
 
@@ -223,9 +222,7 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
                 urls = set(re.findall(r'''(?i)href=["']([^\s"'<>]+)''', text))
                 if urls:
                     LOGGER.info(
-                        'found %r distinct urls via %r',
-                        len(urls),
-                        response.url.human_repr(),
+                        f'found {len(urls)} distinct urls via {response.url.human_repr()}'  # pylint: disable=C0301 # noqa: E501
                     )
 
                 for url in urls:
@@ -265,20 +262,18 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
                 response = await self.session.get(url, allow_redirects=False)
 
                 if tries > 1:
-                    LOGGER.debug('fetch attempt %r for %r succeeded', tries, url)
+                    LOGGER.debug(f'fetch attempt {tries} for {url} succeeded')
 
                 break
 
             except aiohttp.ClientError as client_error:
-                LOGGER.error('fetch attempt %r for %r: %r', tries, url, client_error)
+                LOGGER.error(f'fetch attempt {tries} for {url}: {client_error}')
                 exception = client_error
 
             tries += 1
 
         else:
-            LOGGER.error(
-                'attempt to fetch %r failed after %r tries', url, self.max_tries
-            )
+            LOGGER.error(f'attempt to fetch {url} failed after {self.max_tries} tries')
 
             self.record_statistic(
                 UrlStatistic(
@@ -319,11 +314,11 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
                     return
 
                 if max_redirect > 0:
-                    LOGGER.info('found redirect: from %r to %r', url, next_url)
+                    LOGGER.info(f'found redirect: from {url} to {next_url}')
                     self.produce_work_unit(next_url, max_redirect - 1)
 
                 else:
-                    LOGGER.error('redirect limit reached: from %r to %r', url, next_url)
+                    LOGGER.error(f'redirect limit reached: from {url} to {next_url}')
             else:
                 stat, links = await self.parse_links(response)
 
@@ -367,13 +362,13 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
         parts = urllib.parse.urlparse(url)
 
         if parts.scheme not in ('http', 'https'):
-            LOGGER.debug('skipping non-http scheme in found at %r', url)
+            LOGGER.debug(f'skipping non-http scheme in found at {url}')
             return False
 
         host, _ = urllib.parse.splitport(parts.netloc)  # type: ignore
 
         if not self.host_okay(host):
-            LOGGER.debug('skipping non-root host found at %r', url)
+            LOGGER.debug(f'skipping non-root host found at {url}')
             return False
 
         return True
@@ -388,7 +383,7 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
         if max_redirect is None:
             max_redirect = self.max_redirect
 
-        LOGGER.debug('adding %r %r', url, max_redirect)
+        LOGGER.debug(f'adding {url} {max_redirect}')
 
         self.crawled_urls.add(url)
         self.queue.put_nowait((url, max_redirect))
@@ -409,20 +404,6 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
         for w in workers:
             w.cancel()
 
-    def add_statistic(self, key: str, count: int = 1) -> None:
-        """Add a statistic record
-
-        Args:
-            key (str)
-            count (int, optional). Defaults to 1.
-        """
-        self.stats[key] = self.stats.get(key, 0) + count
-
-    def log_statistic(self) -> None:
-        """Log a statistic record to the logger instance"""
-        for key, count in sorted(self.stats.items()):
-            LOGGER.info('%10d' % count, key)
-
     def run_report(self) -> None:
         """Run (print) a full session report"""
         t1 = self.t1 or time.time()
@@ -436,67 +417,38 @@ class WebCrawler(BaseBrutusModule):  # pylint: disable=R0902
 
         LOGGER.info('CRAWLER STATISTICS REPORT')
 
-        try:
-            show = list(self.statistics)
-            show.sort(key=lambda stat: str(stat.url))
+        show = list(self.statistics)
+        show.sort(key=lambda stat: str(stat.url))
 
-            for stat in show:
-                self.log_url_metadata(stat)
-
-        except KeyboardInterrupt:
-            LOGGER.info('SIGINT received')
+        for stat in show:
+            self.log_url_metadata(stat)
 
         LOGGER.info(
-            'Completed parsing',
-            len(self.statistics),
-            'urls in %.3f secs' % dt,
-            '(max_tasks=%d)' % self.max_tasks,
-            '(%.3f urls per second per task)' % speed,
+            f'Completed parsing {len(self.statistics)} urls in {dt} secs; (max_tasks={self.max_tasks}) ({speed} urls per second per task)',  # pylint: disable=C0301 # noqa: E501
         )
 
-        self.log_statistic()
+        LOGGER.info(f'Remaining: {self.queue.qsize()}')
+        LOGGER.info(f'Total Statistics: {len(self.statistics)}')
+        LOGGER.info(f'Datetime: {time.ctime()} local time')
 
-        LOGGER.info('Remaining:', self.queue.qsize())
-        LOGGER.info('Total Statistics:', len(self.statistics))
-        LOGGER.info('Datetime:', time.ctime(), 'local time')
-
-    def log_url_metadata(self, stat: 'UrlStatistic') -> None:
+    def log_url_metadata(self, stat: 'UrlStatistic') -> None:  # pylint: disable=R0201
         """Run (print) log URL metadata, add statistics
 
         Args:
             stat (UrlStatistic)
         """
         if stat.exception:
-            self.add_statistic('fail')
-            self.add_statistic('fail_' + str(stat.exception.__class__.__name__))
-
-            LOGGER.info(stat.url, 'error', stat.exception)
+            LOGGER.info(f'{stat.url} error {stat.exception}')
 
         elif stat.next_url:
-            self.add_statistic('redirect')
-            LOGGER.info(stat.url, stat.status, 'redirect', stat.next_url)
+            LOGGER.info(f'{stat.url} {stat.status} redirect {stat.next_url}')
 
         elif stat.content_type == 'text/html':
-            self.add_statistic('html')
-            self.add_statistic('html bytes', stat.size)
             LOGGER.info(
-                stat.url,
-                stat.status,
-                stat.content_type,
-                stat.encoding,
-                stat.size,
-                '%d/%d' % (stat.num_new_urls, stat.num_urls),
+                f'{stat.url} {stat.status} {stat.content_type} {stat.encoding} {stat.size} {stat.num_new_urls}/{stat.num_urls}'  # pylint: disable=C0301 # noqa: E501
             )
 
         else:
-            if stat.status == 200:
-                self.add_statistic('other')
-                self.add_statistic('other bytes', stat.size)
-            else:
-                self.add_statistic('error')
-                self.add_statistic('error bytes', stat.size)
-                self.add_statistic('status_%s' % stat.status)
-
             LOGGER.info(
-                stat.url, stat.status, stat.content_type, stat.encoding, stat.size
+                f'{stat.url} {stat.status} {stat.content_type} {stat.encoding} {stat.size}'  # pylint: disable=C0301 # noqa: E501
             )
