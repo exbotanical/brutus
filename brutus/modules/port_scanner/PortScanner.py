@@ -7,7 +7,7 @@ from threading import Lock
 
 from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 from brutus.utils.networking import hostname_resolves
 
 # prevent weird output race conditions
@@ -62,7 +62,7 @@ class PortScanner(BaseBrutusModule, ThreadedTaskQueue):
             sock.settimeout(1)
             if sock.connect_ex((hostname, port)) == 0:
                 with lock:
-                    Logger.warn(f'{hostname}:{port} is open')
+                    LOGGER.warning(f'{hostname}:{port} is open')
 
         except socket.error:
             pass

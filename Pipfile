@@ -9,6 +9,7 @@ requests = "*"
 scapy = "*"
 pynput = "==1.6.8"
 pyinstaller = "*"
+aiohttp = "*"
 
 [dev-packages]
 pylint = "*"

@@ -4,7 +4,7 @@ Inquirer interface
 import inquirer  # type: ignore
 
 from brutus.modules.lan_scanner.LocalNetworkScanner import LocalNetworkScanner
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 questions = [
     inquirer.Text(
@@ -26,11 +26,11 @@ def run() -> None:
     discoveries = scanner.run()
 
     if len(discoveries):
-        Logger.info('\nIP\t\t|\tMAC Address\n-----------------------------------------')
+        LOGGER.info('\nIP\t\t|\tMAC Address\n-----------------------------------------')
 
         for discovery in discoveries:
             ip = discovery['ip']
             mac = discovery['mac']
-            Logger.warn(f'{ip}\t\t{mac}')
+            LOGGER.warning(f'{ip}\t\t{mac}')
 
-    Logger.success(f'Scan of {ip_range} complete')
+    LOGGER.info(f'Scan of {ip_range} complete')

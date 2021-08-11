@@ -8,7 +8,7 @@ import requests
 from brutus.models.BaseBrutusModule import BaseBrutusModule
 from brutus.tasking.ThreadedTaskQueue import ThreadedTaskQueue
 from brutus.utils.fs import FileChunk, split_file  # pylint: disable=W0611
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 from brutus.utils.networking import hostname_resolves
 
 
@@ -79,7 +79,7 @@ class SubdomainScanner(BaseBrutusModule, ThreadedTaskQueue):
                     )
                     if exists:
                         # TODO write to db
-                        Logger.warn(f'subdomain found: {subdomain}.{hostname}')
+                        LOGGER.warning(f'subdomain found: {subdomain}.{hostname}')
                 # TODO we want some sort of fail-fast behavior
                 # either use joinable threads or an event here to break *all* threads
                 # if we know the request will fail every time

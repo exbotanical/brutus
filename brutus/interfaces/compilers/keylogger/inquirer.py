@@ -5,7 +5,7 @@ import inquirer  # type: ignore
 
 from brutus.interfaces.utils.inquirer_utils import destructure
 from brutus.models.CompilerFactory import CompilerFactory
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 
 def not_empty(_: dict, answer: str):
@@ -83,12 +83,12 @@ def run() -> None:
                 ]
             )
         print('\n')
-        Logger.success(f'successfully compiled to {filename}')
-        Logger.info(
+        LOGGER.info(f'successfully compiled to {filename}')
+        LOGGER.info(
             'you must allow \'less secure applications\' in provided Gmail account'
         )
-        Logger.info('do so here: https://myaccount.google.com/lesssecureapps')
+        LOGGER.info('do so here: https://myaccount.google.com/lesssecureapps')
     except KeyboardInterrupt:
-        Logger.warn('terminated by user')
+        LOGGER.warning('terminated by user')
     except Exception:  # pylint: disable=W0703
-        Logger.fail('compilation failed')
+        LOGGER.error('compilation failed')

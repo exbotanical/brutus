@@ -4,7 +4,7 @@ Inquirer interface
 import inquirer  # type: ignore
 
 from brutus.modules.arp_spoofer.ArpSpoofer import ArpSpoofer
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 from ..utils.inquirer_utils import destructure
 
@@ -23,7 +23,7 @@ def spoofer_routine(n_packets: int) -> None:
     Args:
         n_packets (int): running total number of packets sent
     """
-    Logger.success(f'Successful transaction; {n_packets} packets sent')
+    LOGGER.info(f'Successful transaction; {n_packets} packets sent')
 
 
 def run() -> None:

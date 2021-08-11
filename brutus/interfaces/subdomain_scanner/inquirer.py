@@ -4,7 +4,7 @@ Inquirer interface
 import inquirer  # type: ignore
 
 from brutus.modules.subdomain_scanner.SubdomainScanner import SubdomainScanner
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 from ..utils.inquirer_utils import destructure
 
@@ -60,9 +60,9 @@ def run() -> None:
     )
 
     if not scanner.validate_hostname(hostname=domain):
-        Logger.fail(f'hostname {domain} cannot be resolved')
+        LOGGER.error(f'hostname {domain} cannot be resolved')
         return
 
     scanner.run()
 
-    Logger.success(f'Scan of {domain} complete')
+    LOGGER.info(f'Scan of {domain} complete')

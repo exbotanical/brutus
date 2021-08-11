@@ -1,9 +1,11 @@
 """
 Brutus is an educational exploitation kit
 """
-from .interfaces.compilers.keylogger.inquirer import run
+from .interfaces.web_crawler.inquirer import run
+from .utils.logger import LOGGER
 
 try:
+    LOGGER.info('init')
     run()
 except KeyboardInterrupt:
-    print('hi')
+    LOGGER.info('cancelled')

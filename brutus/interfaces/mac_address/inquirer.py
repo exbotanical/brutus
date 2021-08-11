@@ -4,7 +4,7 @@ Inquirer interface
 import inquirer  # type: ignore
 
 from brutus.modules.mac_address.MacAddressManager import MacAddressManager
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 from ..utils.inquirer_utils import destructure, validate
 
@@ -81,6 +81,6 @@ def run() -> None:
     MacAddressManager.change_macaddr(interface, new_mac)
 
     if MacAddressManager.validate_macaddr_persistence(interface, new_mac):
-        Logger.info(f'updated MAC address for interface {interface} to {new_mac}')
+        LOGGER.info(f'updated MAC address for interface {interface} to {new_mac}')
     else:
-        Logger.fail(f'failed to update MAC address for interface {interface} ')
+        LOGGER.error(f'failed to update MAC address for interface {interface} ')

@@ -4,7 +4,7 @@ Inquirer interface
 import inquirer  # type: ignore
 
 from brutus.modules.port_scanner.PortScanner import PortScanner
-from brutus.utils.log import Logger
+from brutus.utils.logger import LOGGER
 
 from ..utils.inquirer_utils import destructure
 
@@ -64,9 +64,9 @@ def run() -> None:
     )
 
     if not scanner.validate_hostname(hostname=hostname):
-        Logger.fail(f'hostname {hostname} cannot be resolved')
+        LOGGER.error(f'hostname {hostname} cannot be resolved')
         return
 
     scanner.run()
 
-    Logger.success(f'Scan of {hostname}, ports {start_port} - {end_port} complete')
+    LOGGER.info(f'Scan of {hostname}, ports {start_port} - {end_port} complete')
