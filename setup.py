@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
-# used setuppy-generator , 
-# trimmed to fit requirements.txt import for saster easier mani't..  https://stackoverflow.com/questions/14399534/reference-requirements-txt-for-the-install-requires-kwarg-in-setuptools-setup-py 
-import os
 from setuptools import setup
-
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-setup(...
+setup(
 	name='brutus',
+    author='goldmund',
+    url='https://github.com/MatthewZito/brutus/',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
 	install_requires=required,
-    ],
     scripts=[
-        'scripts\flush_iptables_fwd.sh',
-        'scripts\oui_refresh.sh',
-        'scripts\reset_iptables_all.sh',
-        'scripts\__init__.py',
+        'scripts/flush_iptables_fwd.sh',
+        'scripts/oui_refresh.sh',
+        'scripts/reset_iptables_all.sh',
+        'scripts/__init__.py',
     ],
     packages=[
         'app',
