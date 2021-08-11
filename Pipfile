@@ -21,5 +21,5 @@ python_version = "3.8"
 [scripts]
 test = "python3 -m unittest discover -s brutus -p \"*_test.py\" -f"
 lint = "pylint brutus/"
-run = "python3 -m brutus"
+brutus = "python3 -m brutus"
 setup = "pre-commit install"

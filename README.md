@@ -55,6 +55,32 @@ pipenv install
 
 ## <a name="usage"></a> Usage
 
+Run:
+
+```bash
+pipenv run brutus
+```
+
+Test:
+
+```bash
+pipenv run test
+```
+
+Lint:
+
+```bash
+pipenv run lint
+```
+
+Setup Git Hooks for Development:
+
+```bash
+pipenv run setup
+```
+
+Feel free to open PRs with feature proposals, bugfixes, et al. Note that much of this project is still in progress. The base is there and ready for you to build upon.
+
 ### <a name="features"></a> Brutus: Features and Included Modules
 
 Brutus includes several modules which can be generalized as belonging to three macro-categories: *network-based*, *web-based*, and *payloads*. The latter category is a library of compilers and accompanying payloads - payloads can be compiled via Brutus' interactive command-line menu; compiled payloads can subsequently be loaded into many of Brutus' applicable network-based modules.
