@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+inquirer = "*"
+requests = "*"
+scapy = "*"
+pynput = "==1.6.8"
+pyinstaller = "*"
+aiohttp = "*"
+
+[dev-packages]
+pylint = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+test = "python3 -m unittest discover -s brutus -p \"*_test.py\" -f"
+lint = "pylint brutus/"
+run = "python3 -m brutus"
+setup = "pre-commit install"
